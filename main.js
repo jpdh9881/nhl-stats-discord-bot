@@ -24,34 +24,34 @@ client.on('messageCreate', async message => {
         case "draft": {
           const text = await command_map["draft"](...args);
           if (Array.isArray(text)) {
-            message.reply(text[0]);
-            message.reply(text[1]);
+            await message.reply(text[0]);
+            await message.reply(text[1]);
           } else {
-            message.reply(text);
+            await message.reply(text);
           }
         } break;
         case "player": {
           const text = await command_map["player"](...args);
-          message.reply(text);
+          await message.reply(text);
         } break;
         case "schedule": {
           const schedule = await command_map["schedule"](...args);
-          schedule.forEach(piece => {
-            message.reply(piece);
-          })
+          for (const piece of schedule) {
+            await message.reply(piece);
+          }
         } break;
         case "teams": {
           const text = await command_map["teams"]();
-          message.reply(text);
+          await message.reply(text);
         } break;
         case "team": {
           const text = await command_map["team"](...args);
-          message.reply(text);
+          await message.reply(text);
         } break;
       }
     } catch (error) {
       console.log(error);
-      message.reply(ERROR_TAG + " - " + error);
+      await message.reply(ERROR_TAG + " - " + error);
     }
   }
 })

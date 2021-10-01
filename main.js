@@ -35,8 +35,10 @@ client.on('messageCreate', async message => {
           message.reply(text);
         } break;
         case "schedule": {
-          const text = await command_map["schedule"](...args);
-          message.reply(text);
+          const schedule = await command_map["schedule"](...args);
+          schedule.forEach(piece => {
+            message.reply(piece);
+          })
         } break;
         case "teams": {
           const text = await command_map["teams"]();

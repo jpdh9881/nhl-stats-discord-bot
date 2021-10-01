@@ -1,5 +1,6 @@
 const draft = require("./draft.js");
 const player = require("./player.js");
+const prospect = require("./prospect.js");
 const schedule = require("./schedule.js");
 const team = require("./team.js");
 const teams = require("./teams.js");
@@ -46,6 +47,8 @@ const command_map = {
    * Description: Gets data related to a team
    */
   player,
+
+  prospect,
 
   // utility commands (don't count towards assignment count)
   /**

@@ -1,9 +1,10 @@
 const axios = require("axios");
-const teams = require("../helpers/teams");
+const getTeams = require("./teams/getTeams");
+const makeProspect = require("./prospect/makeProspect");
 
 const draft = async (arg1, arg2, arg3 = 1) => {
   // Get team abbreviations
-  const teamIdMap = await teams({ format: "id:abbrev", raw: true });
+  const teamIdMap = await getTeams({ format: "id:abbrev", raw: true });
 
   let text;
   if (arg2 === "round") {
@@ -40,31 +41,20 @@ const draft = async (arg1, arg2, arg3 = 1) => {
     const numPicksPerRound = rounds[0].picks.length;
     const roundIndex = Math.floor(overallPick / numPicksPerRound);
     const indexInRound = overallPick - (roundIndex * numPicksPerRound);
+
     const pick = rounds[roundIndex]?.picks[indexInRound - 1];
-    console.log(roundIndex, indexInRound);
     if (!pick) {
       throw new Error ("Invalid pick");
     }
+    console.log(pick);
     const prospectId = pick.prospect.id;
+    let prospect = null;
+    if (prospectId) {
+      const res2 = await axios.get(`https://statsapi.web.nhl.com/api/v1/draft/prospects/${prospectId}`);
+      prospect = res2.data.prospects[0];
+    }
+    text = makeProspect(pick, prospect, teamIdMap[pick.team.id]);
 
-    const res2 = await axios.get(`https://statsapi.web.nhl.com/api/v1/draft/prospects/${prospectId}`);
-    data = res2.data.prospects[0];
-    console.log(data.amateurTeam);
-    text =
-`
-__${data.lastName}, ${data.firstName} - ${pick.year} Draft - R${pick.round}-${pick.pickInRound} (overall: ${pick.pickOverall})__
-**Birth Date**: ${data.birthDate ? data.birthDate : ""}
-**Place of Birth**: ${data.birthCity ? data.birthCity : ""}, ${data.birthStateProvince? data.birthStateProvince : "" }, ${data.birthCountry}
-**Height**: ${data.height ? data.height : ""}
-**Weight**: ${data.weight ? data.weight : ""}lbs
-**Position**: ${data.primaryPosition.abbreviation ? data.primaryPosition.abbreviation : ""}
-**Shoots/Catches**: ${data.shootsCatches ? data.shootsCatches : ""}
-**Amateur Team**: ${data.amateurTeam.name ? data.amateurTeam.name : ""} (${data.amateurLeague.name ? data.amateurLeague.name : ""})
-**Prospect Category**: ${data.prospectCategory.name ? data.prospectCategory.name : ""}
-**Draft Status**: ${data.draftStatus ? data.draftStatus : ""}
-(player id: ${data.nhlPlayerId? data.nhlPlayerId : ""})
-(prospect id: ${data.id ? data.id : ""})
-`;
   }
   return text;
 };

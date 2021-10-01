@@ -1,9 +1,11 @@
 const axios = require("axios");
-const teams = require("../helpers/teams.js");
+const getTeams = require("./teams/getTeams.js");
+const makeGame = require("./schedule/makeGame.js");
+const makeSchedule = require("./schedule/makeSchedule.js");
 
 const schedule = async (arg1, arg2) => {
   // Get team abbreviations
-  const teamIdMap = await teams({ format: "id:abbrev", raw: true });
+  const teamIdMap = await getTeams({ format: "id:abbrev", raw: true });
 
   let data = [];
   if (arg1) {
@@ -59,23 +61,12 @@ const schedule = async (arg1, arg2) => {
   }
 
   // Package it up nice
-  let info = "";
+  let games = [];
   data.forEach(game => {
-    const date = (new Date(game.gameDate)).toLocaleDateString();
-    const time = (new Date(game.gameDate)).toLocaleTimeString();
-    info +=
-`
-__${date} - ${time}__
-**Home**: ${game.teams.home.team.name} (${teamIdMap[game.teams.home.team.id]})
-**Away**: ${game.teams.away.team.name} (${teamIdMap[game.teams.away.team.id]})
-**Venue**: ${game.venue.name}
-(game code: ${game.gamePk})
-`;
+    games.push(makeGame(game, teamIdMap[game.teams.home.team.id], teamIdMap[game.teams.away.team.id]));
   });
-  if (info === "") {
-    info = "No games :(";
-  }
-  return info;
+  const schedule = makeSchedule(games);
+  return schedule;
 };
 
 module.exports = schedule;

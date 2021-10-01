@@ -1,9 +1,9 @@
 const axios = require("axios");
-const teams = require("../helpers/teams.js");
+const getTeams = require("./teams/getTeams.js");
 
 const team = async (arg1, arg2) => {
   // Get team ID
-  const teamIdMap = await teams({ format: "abbrev:id", raw: true });
+  const teamIdMap = await getTeams({ format: "abbrev:id", raw: true });
   const teamId = teamIdMap[arg1.toUpperCase()];
 
   if (arg2 === "roster") {

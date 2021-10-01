@@ -1,4 +1,4 @@
-const teamsQuery = require("../helpers/teams.js");
+const getTeams = require("./teams/getTeams.js");
 
 /**
  *
@@ -6,7 +6,7 @@ const teamsQuery = require("../helpers/teams.js");
  * @returns
  */
 const teams = async () => {
-  return teamsQuery({
+  return getTeams({
     format: "abbrev:name",
     raw: false,
   });

@@ -5,7 +5,7 @@ const axios = require("axios");
  * @param {object} param0 format = "abbrev:id"/"id:abbrev"/"abbrev:name", raw = true/false
  * @returns
  */
-const teams = async ({ format, raw }) => {
+const getTeams = async ({ format, raw }) => {
   let res = await axios.get("https://statsapi.web.nhl.com/api/v1/teams");
 
   const teams = {};
@@ -37,4 +37,4 @@ const teams = async ({ format, raw }) => {
   }
 };
 
-module.exports = teams;
+module.exports = getTeams;

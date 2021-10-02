@@ -29,10 +29,11 @@ const getTeams = async ({ format, raw }) => {
   } else {
     // Make it nice
     const arr = Object.entries(teams).sort((a, b) => (a > b) - (a < b)); // sorting help from here: https://stackoverflow.com/questions/979256/sorting-an-array-of-objects-by-property-values
-    let text = "";
+    let text = "```";
     arr.forEach(([key, value]) => {
       text += `${key}: ${value}\n`;
     });
+    text += "(teamCode: teamName)```";
     return text;
   }
 };

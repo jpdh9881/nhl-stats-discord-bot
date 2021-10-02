@@ -1,20 +1,20 @@
 const axios = require("axios");
 const makePlayer = require("./player/makePlayer.js");
 
-const player = async (arg1, arg2) => {
-  if (arg1) {
-    const playerId = arg1;
-    if (arg2 === "stats") {
-      // return stats
-      const res = await axios.get(`https://statsapi.web.nhl.com/api/v1/people/${playerId}/stats?stats=statsSingleSeason`);
-      if (res.data.stats.length > 0) {
-        const data = res.data.stats[0].splits[0];
-        const text = makePlayer({ stats: data.stat, season: data.season });
-        return text;
-      } else {
-        return "No data found.";
-      }
-    } else {
+const help =
+  `\`\`\`` +
+  `Command: ?player playerId -option1\n` +
+  `           playerId: the id of the player\n` +
+  `           -option1: -info, -stats\n` +
+  `             1) -info: (default) get general information related to the player\n` +
+  `             2) -stats: get the player's statistics for the most recent season` +
+  `\`\`\``;
+const player = async (playerId, option1 = "-info") => {
+  if (!playerId) {
+    return help;
+  }
+  switch (option1) {
+    case "-info": {
       // no stats
       const res = await axios.get(`https://statsapi.web.nhl.com/api/v1/people/${playerId}`);
       if (res.data.people.length > 0) {
@@ -24,9 +24,21 @@ const player = async (arg1, arg2) => {
       } else {
         return "No player found.";
       }
+    } break;
+    case "-stats": {
+      const res = await axios.get(`https://statsapi.web.nhl.com/api/v1/people/${playerId}/stats?stats=statsSingleSeason`);
+      if (res.data.stats.length > 0) {
+        const data = res.data.stats[0].splits[0];
+        const text = makePlayer({ stats: data.stat, season: data.season });
+        return text;
+      } else {
+        return "No data found.";
+      }
+    } break;
+    default: {
+      return help;
     }
   }
-  return "Command: player arg1 arg2? (arg1 = player code, arg2 = info/stats)";
 };
 
 module.exports = player;

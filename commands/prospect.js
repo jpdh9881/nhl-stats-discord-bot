@@ -1,5 +1,5 @@
 const axios = require("axios");
 
-const player = async (arg1) => {
+const prospect = async (arg1) => {
 
 };

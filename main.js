@@ -4,7 +4,7 @@ const { Client, Intents } = require('discord.js')
 const COMMAND = require("./map_command.js");
 const FN = require("./map_fn.js");
 
-const ERROR_TAG = "Umm, something went wrong. Guess what it was from this cryptique message...";
+const ERROR_TAG = "Umm, something went wrong. Try interpreting this cryptique message: ";
 
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
@@ -22,6 +22,10 @@ client.on('messageCreate', async message => {
 
     try {
       switch(userCommand) {
+        case COMMAND["entryPoint"]: {
+          const text = FN["entryPoint"]();
+          await message.reply(text);
+        } break;
         case COMMAND["draft"]: {
           const text = await FN["draft"](...args);
           if (Array.isArray(text)) {
@@ -47,7 +51,13 @@ client.on('messageCreate', async message => {
         } break;
         case COMMAND["team"]: {
           const text = await FN["team"](...args);
-          await message.reply(text);
+          if (Array.isArray(text)) {
+            for (const piece of text) {
+              await message.reply(piece);
+            }
+          } else {
+            await message.reply(text);
+          }
         } break;
         case COMMAND["teams"]: {
           const text = await FN["teams"]();

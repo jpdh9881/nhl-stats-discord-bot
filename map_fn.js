@@ -1,3 +1,4 @@
+const entryPoint = require("./commands/entry_point.js");
 const draft = require("./commands/draft.js");
 const player = require("./commands/player.js");
 const prospect = require("./commands/prospect.js");
@@ -6,6 +7,8 @@ const team = require("./commands/team.js");
 const teams = require("./commands/teams.js");
 
 const fn = {
+  entryPoint,
+
   /**
    * (2 arguments)
    * Endpoint: https://statsapi.web.nhl.com/api/v1/draft

@@ -1,3 +1,5 @@
+const padLeft = require("../_lib/format.js").padLeft;
+
 const makePlayer = ({ stats, info, season }) => {
   if (stats) {
     const s = stats;
@@ -52,7 +54,7 @@ const makePlayer = ({ stats, info, season }) => {
 
     const F_N = i?.fullName ? i.fullName : "";
     const POS = i?.primaryPosition?.abbreviation ? i?.primaryPosition?.abbreviation : "";
-    const NUM = i?.primaryNumber ? i.primaryNumber : "";
+    const NUM = padLeft(i?.primaryNumber, 2);
     const SH_CA = i?.shootsCatches ? i?.shootsCatches : "";
     const B_D = i?.birthDate ? i?.birthDate : "";
     const C_A = i?.currentAge ? i.currentAge : "";

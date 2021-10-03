@@ -16,7 +16,7 @@ const makeInfo = (teamInfo) => {
     `${NM} (${NM_AB})\n` +
     `  ${DIV} division, ${CON} conference\n` +
     `  ---\n` +
-    `  Arena: ${VN_NM}, ${VN_C} -- Timezone: ${VN_TZ_ID} (${VN_TZ_NM})s\n` +
+    `  Arena: ${VN_NM}, ${VN_C} -- Timezone: ${VN_TZ_ID} (${VN_TZ_NM})\n` +
     `  ---\n` +
     `  In NHL since: ${FY}\n` +
     `  ---\n` +

@@ -1,6 +1,5 @@
 const makeGame = (game, teamCodeHome, teamCodeAway) => {
   const g = game;
-  console.log(g, g.teams, g.teams.away);
 
   const date = (new Date(g.gameDate)).toLocaleDateString();
   const time = (new Date(g.gameDate)).toLocaleTimeString();

@@ -1,23 +1,10 @@
 const axios = require("axios");
+const api = require("../api.js").api;
+const help = require("./map_help.js")["schedule"];
 const getTeams = require("./teams/getTeams.js");
 const makeGame = require("./schedule/makeGame.js");
 const makeSchedule = require("./schedule/makeSchedule.js");
 
-const help =
-  `\`\`\`` +
-  `Command:\n` +
-  `  ?schedule teamCode? date?\n` +
-  `     teamCode: (optional) 3-letter teamCode\n` +
-  `       (if absent: schedule for all teams)\n` +
-  `     date: (optional) YYYY-MM-DD\n` +
-  `       (if absent: today's date)\n` +
-  `Help:\n` +
-  `  ?schedule -help\n` +
-  `Examples:\n` +
-  `  ?schedule (today's games for all teams)\n` +
-  `  ?schedule TOR (today's schedule for Toronto)\n` +
-  `  ?schedule MTL 2021-10-28 (Montreal's schedule for Oct. 28, 2021)\n` +
-  `\`\`\``;
 const schedule = async (option1, option2) => {
   // Get team abbreviations
   const teamIdMap = await getTeams({ format: "id:abbrev", raw: true });
@@ -35,7 +22,7 @@ const schedule = async (option1, option2) => {
       if (option2) {
         // option2 = date
         const date = option2;
-        let res = await axios.get("https://statsapi.web.nhl.com/api/v1/schedule", {
+        let res = await axios.get(`${api}schedule`, {
           params: {
             teamId: teamId,
             startDate: date,
@@ -48,7 +35,7 @@ const schedule = async (option1, option2) => {
         }
       } else {
         // no arg 2
-        let res = await axios.get("https://statsapi.web.nhl.com/api/v1/schedule", {
+        let res = await axios.get(`${api}schedule`, {
           params: {
             teamId: teamId,
           },
@@ -60,7 +47,7 @@ const schedule = async (option1, option2) => {
     } else {
       // option1 = date
       const date = option1;
-      let res = await axios.get("https://statsapi.web.nhl.com/api/v1/schedule", {
+      let res = await axios.get(`${api}schedule`, {
         params: {
           startDate: date,
           endDate: date,
@@ -72,7 +59,7 @@ const schedule = async (option1, option2) => {
     }
   } else {
     // assume today's date
-    let res = await axios.get("https://statsapi.web.nhl.com/api/v1/schedule");
+    let res = await axios.get(`${api}schedule`);
     if (res.data.dates.length > 0) {
       data = res.data.dates[0].games;
     }

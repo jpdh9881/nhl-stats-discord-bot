@@ -1,5 +1,4 @@
 const makeRoster = (roster) => {
-  console.log(roster);
 
   let players = "";
   roster.forEach(pl => {

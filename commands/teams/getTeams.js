@@ -1,4 +1,5 @@
 const axios = require("axios");
+const api = require("../../api.js").api;
 
 /**
  *
@@ -6,7 +7,7 @@ const axios = require("axios");
  * @returns
  */
 const getTeams = async ({ format, raw }) => {
-  let res = await axios.get("https://statsapi.web.nhl.com/api/v1/teams");
+  let res = await axios.get(`${api}teams`);
 
   const teams = {};
   res.data.teams.forEach(team => {

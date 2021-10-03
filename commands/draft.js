@@ -12,6 +12,8 @@ const help =
   `        -option2 becomes the number of the round (default: 1)\n` +
   `      2) -pick: display the player selected nth overall\n` +
   `        -option2 becomes the draft position (default: 1)\n` +
+  `Help:` +
+  `  ?draft -help` +
   `Note:\n` +
   `  # of rounds and # of players drafted changes year to year!\n` +
   `Examples:\n` +
@@ -22,7 +24,7 @@ const draft = async (draftYear, option1, option2 = 1) => {
   // Get team abbreviations
   const teamIdMap = await getTeams({ format: "id:abbrev", raw: true });
 
-  if (!draftYear) {
+  if (!draftYear || draftYear === "-help") {
     return help;
   }
 
@@ -69,14 +71,14 @@ const draft = async (draftYear, option1, option2 = 1) => {
       if (!pick) {
         throw new Error ("Invalid pick");
       }
-      console.log(pick);
+
       const prospectId = pick.prospect.id;
       let prospect = null;
       if (prospectId) {
         const res2 = await axios.get(`https://statsapi.web.nhl.com/api/v1/draft/prospects/${prospectId}`);
         prospect = res2.data.prospects[0];
       }
-      const text = makeProspect(pick, prospect, teamIdMap[pick.team.id]);
+      const text = makeProspect(prospect, pick, teamIdMap[pick.team.id]);
 
       return text;
     } break;

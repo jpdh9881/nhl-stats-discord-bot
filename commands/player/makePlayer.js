@@ -77,8 +77,13 @@ const makePlayer = ({ stats, info, season }) => {
       `  Nationality ${NAT}\n` +
       `  [${C_A} yrs. ago]\n` +
       `  Height ${H} -- Weight ${W}\n` +
-      `-----\n` +
-      `  ${C_T}\n`;
+      `  -----\n`;
+
+    if (C_T) {
+      text += `  ${C_T}\n`;
+    } else {
+      text += `  (no team data)\n`;
+    }
 
     if (CAP) {
       text += "  Captain\n"
@@ -91,7 +96,7 @@ const makePlayer = ({ stats, info, season }) => {
     }
 
     text +=
-      `-----\n` +
+      `  -----\n` +
       `  (player id: ${PL_ID})\n` +
       `\`\`\``;
 

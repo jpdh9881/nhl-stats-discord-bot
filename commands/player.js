@@ -7,10 +7,15 @@ const help =
   `           playerId: the id of the player\n` +
   `           -option1: -info, -stats\n` +
   `             1) -info: (default) get general information related to the player\n` +
-  `             2) -stats: get the player's statistics for the most recent season` +
+  `             2) -stats: get the player's statistics for the most recent season\n` +
+  `Help:\n` +
+  `  ?player -help\n` +
+  `Examples:\n` +
+  `  ?player 8477939 -info\n` +
+  `  ?player 8477939 -stats\n` +
   `\`\`\``;
 const player = async (playerId, option1 = "-info") => {
-  if (!playerId) {
+  if (!playerId || playerId === "-help") {
     return help;
   }
   switch (option1) {

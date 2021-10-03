@@ -12,6 +12,14 @@ const makeSchedule = (games) => {
     }
   });
 
+  if (text !== "") {
+    schedule.push(text);
+  }
+
+  if (schedule.length === 0) {
+    schedule.push("```No games :(```");
+  }
+
   return schedule;
 };
 

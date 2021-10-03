@@ -1,58 +1,58 @@
 const axios = require("axios");
 const getTeams = require("./teams/getTeams.js");
+const makeInfo = require("./team/makeInfo.js");
+const makeRoster = require("./team/makeRoster.js");
+const makeStats = require("./team/makeStats.js");
 
-const team = async (arg1, arg2) => {
+const help =
+  `\`\`\`` +
+  `Command:\n` +
+  `  ?team teamCode -option1?\n` +
+  `     teamCode: (optional) 3-letter teamCode\n` +
+  `     -option1: -roster, -stats, -info (default)` +
+  `Help:\n` +
+  `  ?team -help\n` +
+  `Examples:\n` +
+  `  ?team TOR -roster` +
+  `  ?team NSH -stats` +
+  `  ?team WSH` +
+  `\`\`\``;
+const team = async (teamCode, option1) => {
   // Get team ID
   const teamIdMap = await getTeams({ format: "abbrev:id", raw: true });
-  const teamId = teamIdMap[arg1.toUpperCase()];
+  const teamId = teamIdMap[teamCode.toUpperCase()];
 
-  if (arg2 === "roster") {
-    const res = await axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${teamId}/roster`);
-    const data = res.data.roster.sort((a, b) => (parseInt(a.jerseyNumber) > parseInt(b.jerseyNumber)) - (parseInt(a.jerseyNumber) < parseInt(b.jerseyNumber)));
-    let info = "";
-    data.forEach(player => {
-      info += `${player.jerseyNumber? player.jerseyNumber : "??"} - ${player.position.abbreviation} - ${player.person.fullName} (id: ${player.person.id})\n`;
-    });
-    return info;
-  } else if (arg2 === "stats") {
-    const res = await axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${teamId}/stats`);
-    const data = res.data.stats[0]?.splits?.[0]?.stat;
-    let info = "";
-    if (data) {
-      info =
-`
-**Games Played**: ${data.gamesPlayed}
-**Wins**: ${data.wins}
-**Losses**: ${data.losses}
-**OT**: ${data.ot}
-**Points**: ${data.pts}
-**Points %**: ${data.ptPctg}
-`;
-    } else {
-      console.log(data);
-      info =
-`
-**Games Played**: none
-**Wins**: none
-**Losses**: none
-**OT**: none
-**Points**: none
-**Points %**: none
-`;
+  if (!teamId) {
+    return help;
+  }
+
+  switch (option1) {
+    case "-roster": {
+      const res = await axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${teamId}/roster`);
+      const data = res.data.roster.sort((a, b) => (parseInt(a.jerseyNumber) > parseInt(b.jerseyNumber)) - (parseInt(a.jerseyNumber) < parseInt(b.jerseyNumber)));
+      return makeRoster(data);
+    } break;
+    case "-stats": {
+      const res = await axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${teamId}/stats`);
+      const data = res.data.stats[0]?.splits?.[0]?.stat;
+      if (data) {
+        return makeStats(data);
+      } else {
+        return "```No team stats.```"
+      }
+    } break;
+    case "-help": {
+      return "help";
+    } break;
+    default: {
+      const res = await axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${teamId}`);
+      const data = res.data.teams?.[0];
+      if (data) {
+        return makeInfo(data);
+      } {
+        return "```No team info.```";
+      }
     }
-    return info;
-  } else {
-    const res = await axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${teamId}`);
-    const data = res.data.teams?.[0];
-    const info =
-      `
-__${data.name} (${data.firstYearOfPlay} - now)__
-**Division**: ${data.division.name}
-**Conference**: ${data.conference.name}
-**Home Arena**: ${data.venue.name}
-**Official Website**: ${data.officialSiteUrl}
-    `;
-    return info;
   }
 };
 

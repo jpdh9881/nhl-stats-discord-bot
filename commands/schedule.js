@@ -3,21 +3,38 @@ const getTeams = require("./teams/getTeams.js");
 const makeGame = require("./schedule/makeGame.js");
 const makeSchedule = require("./schedule/makeSchedule.js");
 
-const schedule = async (arg1, arg2) => {
+const help =
+  `\`\`\`` +
+  `Command:\n` +
+  `  ?schedule teamCode? date?\n` +
+  `     teamCode: (optional) 3-letter teamCode\n` +
+  `       (if absent: schedule for all teams)\n` +
+  `     date: (optional) YYYY-MM-DD\n` +
+  `       (if absent: today's date)\n` +
+  `Help:\n` +
+  `  ?schedule -help\n` +
+  `Examples:\n` +
+  `  ?schedule (today's games for all teams)\n` +
+  `  ?schedule TOR (today's schedule for Toronto)\n` +
+  `  ?schedule MTL 2021-10-28 (Montreal's schedule for Oct. 28, 2021)\n` +
+  `\`\`\``;
+const schedule = async (option1, option2) => {
   // Get team abbreviations
   const teamIdMap = await getTeams({ format: "id:abbrev", raw: true });
 
   let data = [];
-  if (arg1) {
-    if (arg1.length === 3) {
-      // arg1 = team abbrev
-      const teamAbbrev = arg1.toUpperCase();
+  if (option1) {
+    if (option1 === "-help") {
+      return [ help ];
+    } else if (option1.length === 3) {
+      // option1 = team abbrev
+      const teamAbbrev = option1.toUpperCase();
       const teamIdAbbrev = Object.entries(teamIdMap).find(([id, abbrev]) => abbrev.toUpperCase() === teamAbbrev);
       const teamId = teamIdAbbrev[0];
 
-      if (arg2) {
-        // arg2 = date
-        const date = arg2;
+      if (option2) {
+        // option2 = date
+        const date = option2;
         let res = await axios.get("https://statsapi.web.nhl.com/api/v1/schedule", {
           params: {
             teamId: teamId,
@@ -25,6 +42,7 @@ const schedule = async (arg1, arg2) => {
             endDate: date,
           },
         });
+
         if (res.data.dates.length > 0) {
           data = res.data.dates[0].games;
         }
@@ -40,8 +58,8 @@ const schedule = async (arg1, arg2) => {
         }
       }
     } else {
-      // arg1 = date
-      const date = arg1;
+      // option1 = date
+      const date = option1;
       let res = await axios.get("https://statsapi.web.nhl.com/api/v1/schedule", {
         params: {
           startDate: date,

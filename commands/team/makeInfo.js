@@ -12,7 +12,6 @@ const makeInfo = (teamInfo) => {
   const OS = teamInfo.officialSiteUrl;
 
   let text =
-    `\`\`\`` +
     `${NM} (${NM_AB})\n` +
     `  ${DIV} division, ${CON} conference\n` +
     `  ---\n` +
@@ -20,22 +19,20 @@ const makeInfo = (teamInfo) => {
     `  ---\n` +
     `  In NHL since: ${FY}\n` +
     `  ---\n` +
-    `  Official Website: ${OS}\n`;
+    `  Official Website: ${OS}`;
 
   if (NM_AB === "TOR") {
     text +=
+      `\n` +
       `  ---\n` +
       `  Special Note: the Toronto Maple Leafs are commonly held to be\n` +
-      `    the greatest sports team to ever exist.\n` +
-      `\`\`\``;
+      `    the greatest sports team to ever exist.`;
   } else if (NM_AB === "MTL") {
     text +=
+      `\n` +
       `  ---\n` +
       `  Special Note: Everyone everywhere knows the Montreal Canadians\n` +
-      `    are the worst sports team to ever exist.\n` +
-      `\`\`\``;
-  } else {
-    text += `\`\`\``;
+      `    are the worst sports team to ever exist.`;
   }
 
   return text;

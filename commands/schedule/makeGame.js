@@ -19,21 +19,12 @@ const makeGame = (game, teamCodeHome, teamCodeAway) => {
   const V = g.venue.name? g.venue.name : "";
 
   const text =
-    `\`\`\`` +
     `${date} - ${time} (${seasonSplit} season)\n` +
     `  ${teamCodeAway} (${A_SC}) @ ${teamCodeHome} (${H_SC})\n` +
     `  ${A_TM}: W ${A_W}, L ${A_L}, OT ${A_OT}\n` +
     `  ${H_TM}: W ${H_W}, L ${H_L}, OT ${H_OT}\n` +
-    `  Venue: ${V}\n` +
-    `\`\`\``;
-//     info +=
-// `
-// __${date} - ${time}__
-// **Home**: ${game.teams.home.team.name} (${teamCodeHome})
-// **Away**: ${game.teams.away.team.name} (${teamCodeAway})
-// **Venue**: ${game.venue.name}
-// (game code: ${game.gamePk})
-// `;
+    `  Venue: ${V}`;
+
   return text;
 };
 

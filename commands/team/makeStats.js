@@ -37,14 +37,12 @@ const makeStats = (teamStats) => {
 
 
   const text =
-    `\`\`\`` +
     `GP ${GP} | W ${W} | L ${L} | OT ${OT} | P ${P} | P% ${P_P}\n` +
     `GF/GP ${GF_G} | GA/GP ${GA_G} | EV GF/GA ${EV_GGA_R}\n` +
     `PP% ${PP_P} | PP GF ${PP_G} | PP GA ${PP_GA} | PP OPP ${PP_OPP} | PK% ${PK_P}\n` +
     `Shots/GP ${SH_G} | SA/GP ${SH_A} | SH% ${SH_P} | S% ${S_P}\n` +
     `W% Score 1st ${W_S_F} | W% OPP Score 1st ${W_O_S_F} | W% Lead 1P ${W_L_F_P} | W% Lead 2P ${W_L_S_P} | W% Outshoot OPP ${W_O_O} | W% Outshot by OPP ${W_O_B_O}\n` +
-    `FO ${FO_T} | FOW ${FO_W} | FOL ${FO_L} | FOW% ${FO_WP}\n` +
-    `\`\`\``;
+    `FO ${FO_T} | FOW ${FO_W} | FOL ${FO_L} | FOW% ${FO_WP}`;
   return text;
 };
 

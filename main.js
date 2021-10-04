@@ -42,31 +42,38 @@ client.on('messageCreate', async message => {
         } break;
         case COMMAND_LABEL["player"]: {
           const text = await FN["player"](...args);
-          await message.reply(text);
+          const texts = splitMessage(text);
+          for (const piece of texts) {
+            await message.reply(piece);
+          }
         } break;
         case COMMAND_LABEL["prospect"]: {
           const text = await FN["prospect"](...args);
-          await message.reply(text);
+          const texts = splitMessage(text);
+          for (const piece of texts) {
+            await message.reply(piece);
+          }
         } break;
         case COMMAND_LABEL["schedule"]: {
-          const schedule = await FN["schedule"](...args);
-          for (const piece of schedule) {
+          const text = await FN["schedule"](...args);
+          const texts = splitMessage(text);
+          for (const piece of texts) {
             await message.reply(piece);
           }
         } break;
         case COMMAND_LABEL["team"]: {
           const text = await FN["team"](...args);
-          if (Array.isArray(text)) {
-            for (const piece of text) {
-              await message.reply(piece);
-            }
-          } else {
-            await message.reply(text);
+          const texts = splitMessage(text);
+          for (const piece of texts) {
+            await message.reply(piece);
           }
         } break;
         case COMMAND_LABEL["teams"]: {
           const text = await FN["teams"]();
-          await message.reply(text);
+          const texts = splitMessage(text);
+          for (const piece of texts) {
+            await message.reply(piece);
+          }
         } break;
       }
     } catch (error) {

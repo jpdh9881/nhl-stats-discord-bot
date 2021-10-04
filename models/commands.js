@@ -1,3 +1,4 @@
+const COMMAND_LABELS = require("../command_labels.js");
 const verify = require("./_lib/verify_args.js");
 
 // Format for commands
@@ -50,6 +51,21 @@ const verify = require("./_lib/verify_args.js");
  *  won't be generated correctly)
  *
  */
+
+const entryPoint = {
+  help:
+    "```" +
+    "Description:\n" +
+    "  Discord Bot serving up things from a public but officially-undocumented\n" +
+    "  NHL API! Thank you to Drew Hynes for documenting the API.\n" +
+    "  (Link to documentation repo: https://gitlab.com/dword4/nhlapi)\n" +
+    "Commands:\n" +
+    "  " + Object.values(COMMAND_LABELS).join("\n  ") +
+    "\nHelp:\n" +
+    "  Type 'command -help' for more info on each command\n" +
+    "    (some commands don't have -help messages)" +
+    "```",
+};
 
 const draft = {
   next: {
@@ -205,6 +221,7 @@ const teams = {
 };
 
 module.exports = {
+  entryPoint,
   draft,
   player,
   prospect,

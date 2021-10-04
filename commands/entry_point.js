@@ -1,7 +1,7 @@
-const help = require("./map_help.js")["entryPoint"];
+const config = require("../models/commands").entryPoint;
 
 const entryPoint = () => {
-  return help;
+  return config.help;
 };
 
 module.exports = entryPoint;

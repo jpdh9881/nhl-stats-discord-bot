@@ -1,12 +1,14 @@
 // Modules
 require("dotenv").config();
 const { Client, Intents } = require('discord.js')
-const verifyCommand = require("./commands/_verify_command.js");
 const COMMAND_LABEL = require("./command_labels.js");
-const FN = require("./map_fn.js");
+const verifyCommand = require("./commands/_verify_command.js");
+const runCommand = require("./command_functions.js");
+const createHelpMessage = require("./_lib/createHelpMessage.js");
 const splitMessage = require("./_lib/splitMessage.js");
 
-const ERROR_TAG = "Umm, something went wrong. Try interpreting this cryptique message: ";
+const ERROR_TAG = ":o";
+const ERROR_FORMAT = "Something wrong with your command. Use the -help switch for help.";
 
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
@@ -22,59 +24,81 @@ client.on('messageCreate', async message => {
     const userCommand = split[0];
     const args = split.slice(1);
 
+    let text;
+    let helpCommand;
     try {
       switch(userCommand) {
         case COMMAND_LABEL["entryPoint"]: {
-          const text = FN["entryPoint"]();
+          const text = runCommand["entryPoint"]();
           await message.reply(text);
         } break;
         case COMMAND_LABEL["draft"]: {
           const valid = verifyCommand("draft", args);
-          if (valid) {
-            const text = await FN["draft"](...args);
-            const texts = splitMessage(text);
-            for (const piece of texts) {
-              await message.reply(piece);
-            }
+          if (valid === "help") {
+            helpCommand = "draft";
+          } else if (valid) {
+            text = await runCommand["draft"](...args);
           } else {
-            await message.reply("Invalid command");
+            throw new Error (ERROR_FORMAT);
           }
         } break;
         case COMMAND_LABEL["player"]: {
-          const text = await FN["player"](...args);
-          const texts = splitMessage(text);
-          for (const piece of texts) {
-            await message.reply(piece);
+          const valid = verifyCommand("player", args);
+          if (valid === "help") {
+            helpCommand = "player";
+          } else if (valid) {
+            text = await runCommand["player"](...args);
+          } else {
+            throw new Error (ERROR_FORMAT);
           }
         } break;
         case COMMAND_LABEL["prospect"]: {
-          const text = await FN["prospect"](...args);
-          const texts = splitMessage(text);
-          for (const piece of texts) {
-            await message.reply(piece);
+          const valid = verifyCommand("prospect", args);
+          if (valid === "help") {
+            helpCommand = "prospect";
+          } else if (valid) {
+            text = await runCommand["prospect"](...args);
+          } else {
+            throw new Error (ERROR_FORMAT);
           }
         } break;
         case COMMAND_LABEL["schedule"]: {
-          const text = await FN["schedule"](...args);
-          const texts = splitMessage(text);
-          for (const piece of texts) {
-            await message.reply(piece);
+          const valid = verifyCommand("schedule", args);
+          if (valid === "help") {
+            helpCommand = "schedule";
+          } else if (valid) {
+            text = await runCommand["schedule"](...args);
+          } else {
+            throw new Error (ERROR_FORMAT);
           }
         } break;
         case COMMAND_LABEL["team"]: {
-          const text = await FN["team"](...args);
-          const texts = splitMessage(text);
-          for (const piece of texts) {
-            await message.reply(piece);
+          const valid = verifyCommand("team", args);
+          if (valid === "help") {
+            helpCommand = "team";
+          } else if (valid) {
+            text = await runCommand["team"](...args);
+          } else {
+            throw new Error (ERROR_FORMAT);
           }
         } break;
         case COMMAND_LABEL["teams"]: {
-          const text = await FN["teams"]();
+          const text = await runCommand["teams"]();
           const texts = splitMessage(text);
           for (const piece of texts) {
             await message.reply(piece);
           }
         } break;
+      }
+
+      if (text) {
+        const texts = splitMessage(text);
+        for (const piece of texts) {
+          await message.reply(piece);
+        }
+      } else if (helpCommand) {
+        const help = createHelpMessage(helpCommand);
+        await message.reply(help);
       }
     } catch (error) {
       console.log(error);

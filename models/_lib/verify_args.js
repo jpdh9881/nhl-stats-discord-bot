@@ -34,6 +34,48 @@ const draft = {
   }
 };
 
+const player = {
+  id: (value) => {
+    if (!value) {
+      return false;
+    }
+
+    if (value.match(/^\d{1,}$/)) {
+      return true;
+    }
+    return false;
+  },
+};
+
+const team = {
+  teamCode: (value) => {
+    if (!value) {
+      return false;
+    }
+
+    if (value.match(/^([a-z]|[A-Z]){3}$/)) {
+      return true;
+    }
+    return false;
+  },
+};
+
+const schedule = {
+  YYYY_MM_DD: (value) => {
+    if (!value) {
+      return false;
+    }
+
+    if (value.match(/^\d\d\d\d-\d\d-\d\d$/)) {
+      return true;
+    }
+    return false;
+  },
+};
+
 module.exports = {
   draft,
+  player,
+  team,
+  schedule,
 };

@@ -6,7 +6,7 @@ const schedule = require("./commands/schedule.js");
 const team = require("./commands/team.js");
 const teams = require("./commands/teams.js");
 
-const fn = {
+const runCommand = {
   entryPoint,
 
   /**
@@ -50,4 +50,4 @@ const fn = {
   teams,
 };
 
-module.exports = fn;
+module.exports = runCommand;

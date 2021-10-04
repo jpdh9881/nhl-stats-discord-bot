@@ -19,7 +19,6 @@ const splitMessage = (text, addGraves = true) => {
       messages[i] += "```";
     }
   }
-  console.log(messages);
 
   return messages;
 };

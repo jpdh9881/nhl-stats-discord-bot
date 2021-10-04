@@ -15,21 +15,39 @@ const verify = require("./_lib/verify_args.js");
  *                    ...etc.
  *                }
  *            }
- *            [else if argument has discrete values]
- *            "discrete_option1": {
+ *            [else if argument has several verification functions]
+ *            "option_1": {
+ *              verify: ...
+ *              descr: ...
+ *              next: ...
+ *            },
+ *            "option_2": {
+ *              verify: ...
+ *            }
+ *            [else if argument has discrete values (options preceded by "-")]
+ *            "-discrete_option1": {
  *                "arg2_name": {
  *                    ...etc.
  *                }
  *            },
- *            "discrete_option2": {
+ *            "-discrete_option2": {
  *                "arg2_name": {
  *                    ...etc.
  *                }
  *            }
  *            ---
  *        }
+ *    },
+ *    // for generating the help message
+ *    help: {
+ *        note?: "...note",
+ *        examples: [ "", "", etc. ],
  *    }
  * }
+ *
+ * Notes: all argument labels at the same level should have the same name (i.e.
+ *  arg2_name above should have the same label; otherwise, the help message
+ *  won't be generated correctly)
  *
  */
 
@@ -46,7 +64,7 @@ const draft = {
             next: {
               "-option2": {
                 verify: verify.draft.round,
-                descr: "the number of the round (default: 1)",
+                descr: "(default: 1) the number of the round",
               },
             },
           },
@@ -55,7 +73,7 @@ const draft = {
             next: {
               "-option2": {
                 verify: verify.draft.pick,
-                descr: "the draft position (default: 1)",
+                descr: "(default: 1) the draft position",
               },
             },
           },
@@ -63,8 +81,134 @@ const draft = {
       },
     },
   },
+  help: {
+    note: "# of rounds and # of players drafted can change year to year!",
+    examples: [
+      "2010 -round 5",
+      "2021 -pick 124",
+    ],
+  }
+};
+
+const player = {
+  next: {
+    "playerId": {
+      descr: "the id of the player",
+      verify: verify.player.id,
+      next: {
+        "-option1": {
+          [undefined]: {
+            descr: "equivalent to -info",
+          },
+          "-info": {
+            descr: "get general information related to the player",
+          },
+          "-stats": {
+            descr: "get the player's statistics for the most recent season",
+          },
+        },
+      },
+    }
+  },
+  help: {
+    examples: [
+      "8477939 -info",
+      "8477939 -stats",
+    ],
+  },
+};
+
+const prospect = {
+  next: {
+    "prospectId": {
+      descr: "the id of the prospect",
+      verify: verify.player.id,
+    },
+  },
+  help: {
+    examples: [
+      "24111",
+    ],
+  },
+};
+
+const schedule = {
+  next: {
+    "option1": {
+      [undefined]: {
+        descr: "today's schedule for all teams"
+      },
+      "teamCode": {
+        descr: "3-letter team code",
+        verify: verify.team.teamCode,
+        next: {
+          "+ option2": {
+            [undefined]: {
+              descr: "(today's date)"
+            },
+            date: {
+              descr: "YYYY-MM-DD",
+              verify: verify.schedule.YYYY_MM_DD,
+            },
+          },
+        },
+      },
+      "date": {
+        descr: "YYYY-MM-DD",
+        verify: verify.schedule.YYYY_MM_DD,
+      },
+    },
+  },
+  help: {
+    examples: [
+      "",
+      "2021-10-29",
+      "TOR",
+      "TOR 2021-10-28",
+    ],
+  },
+};
+
+const team = {
+  next: {
+    teamCode: {
+      descr: "3-letter team code",
+      verify: verify.team.teamCode,
+      next: {
+        "-option1": {
+          [undefined]: {
+            descr: "equivalent to -info",
+          },
+          "-info": {
+            descr: "general info about the team",
+          },
+          "-roster": {
+            descr: "the team's current roster",
+          },
+          "-stats": {
+            descr: "team stats for the most current year",
+          },
+        },
+      },
+    },
+  },
+  help: {
+    examples: [
+      "TOR",
+      "TOR -stats",
+      "TOR -roster",
+    ],
+  },
+};
+
+const teams = {
 };
 
 module.exports = {
   draft,
+  player,
+  prospect,
+  schedule,
+  team,
+  teams,
 };

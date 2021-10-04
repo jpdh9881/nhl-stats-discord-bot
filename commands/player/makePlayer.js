@@ -37,7 +37,6 @@ const makePlayer = ({ stats, info, season }) => {
     const FOW_P = s.faceOffPct;
 
     const text =
-    `\`\`\`` +
     `Season: ${seasonSplit}\n` +
     `-----\n` +
     `GP ${GP} | G ${G} | A ${A} | P ${P} | +/- ${PM} | PIM ${PIM} | P/GP ${PGP}\n` +
@@ -45,8 +44,7 @@ const makePlayer = ({ stats, info, season }) => {
     `S ${S} | S% ${S_P} | Bks ${BkS} | Hits ${Hits} | FOW% ${FOW_P}\n` +
     `TOI ${TOI} | PP TOI ${PP_TOI} | SH TOI ${SH_TOI} | EV TOI ${EV_TOI}\n` +
     `TOI/GP ${TOI_GP} | PP TOI/GP ${PP_TOI_GP} | SH TOI/GP ${SH_TOI_GP} | EV TOI/GP ${EV_TOI_GP}\n` +
-    `Shifts ${Shifts} | Shifts/GP ${Shifts_GP}` +
-    `\`\`\``;
+    `Shifts ${Shifts} | Shifts/GP ${Shifts_GP}`;
 
     return text;
   } else if (info) {
@@ -72,7 +70,6 @@ const makePlayer = ({ stats, info, season }) => {
     const RK = i.rookie;
 
     let text =
-      `\`\`\`` +
       `${F_N} (#${NUM})\n` +
       `  ${POS} -- shoots/catches ${SH_CA}\n` +
       `  Born ${B_D} -- ${B_C}, ${B_SP}, ${B_CO}\n` +
@@ -99,8 +96,7 @@ const makePlayer = ({ stats, info, season }) => {
 
     text +=
       `  -----\n` +
-      `  (player id: ${PL_ID})\n` +
-      `\`\`\``;
+      `  (player id: ${PL_ID})\n`;
 
     return text;
   }

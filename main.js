@@ -1,8 +1,10 @@
 // Modules
 require("dotenv").config();
 const { Client, Intents } = require('discord.js')
-const COMMAND = require("./map_command.js");
+const verifyCommand = require("./commands/_verify_command.js");
+const COMMAND_LABEL = require("./command_labels.js");
 const FN = require("./map_fn.js");
+const splitMessage = require("./_lib/splitMessage.js");
 
 const ERROR_TAG = "Umm, something went wrong. Try interpreting this cryptique message: ";
 
@@ -22,34 +24,37 @@ client.on('messageCreate', async message => {
 
     try {
       switch(userCommand) {
-        case COMMAND["entryPoint"]: {
+        case COMMAND_LABEL["entryPoint"]: {
           const text = FN["entryPoint"]();
           await message.reply(text);
         } break;
-        case COMMAND["draft"]: {
-          const text = await FN["draft"](...args);
-          if (Array.isArray(text)) {
-            await message.reply(text[0]);
-            await message.reply(text[1]);
+        case COMMAND_LABEL["draft"]: {
+          const valid = verifyCommand("draft", args);
+          if (valid) {
+            const text = await FN["draft"](...args);
+            const texts = splitMessage(text);
+            for (const piece of texts) {
+              await message.reply(piece);
+            }
           } else {
-            await message.reply(text);
+            await message.reply("Invalid command");
           }
         } break;
-        case COMMAND["player"]: {
+        case COMMAND_LABEL["player"]: {
           const text = await FN["player"](...args);
           await message.reply(text);
         } break;
-        case COMMAND["prospect"]: {
+        case COMMAND_LABEL["prospect"]: {
           const text = await FN["prospect"](...args);
           await message.reply(text);
         } break;
-        case COMMAND["schedule"]: {
+        case COMMAND_LABEL["schedule"]: {
           const schedule = await FN["schedule"](...args);
           for (const piece of schedule) {
             await message.reply(piece);
           }
         } break;
-        case COMMAND["team"]: {
+        case COMMAND_LABEL["team"]: {
           const text = await FN["team"](...args);
           if (Array.isArray(text)) {
             for (const piece of text) {
@@ -59,7 +64,7 @@ client.on('messageCreate', async message => {
             await message.reply(text);
           }
         } break;
-        case COMMAND["teams"]: {
+        case COMMAND_LABEL["teams"]: {
           const text = await FN["teams"]();
           await message.reply(text);
         } break;

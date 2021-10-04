@@ -9,10 +9,6 @@ const draft = async (draftYear, option1, option2 = 1) => {
   // Get team abbreviations
   const teamIdMap = await getTeams({ format: "id:abbrev", raw: true });
 
-  if (!draftYear || draftYear === "-help") {
-    return help;
-  }
-
   switch (option1) {
     case "-round": {
       const roundNum = option2;
@@ -58,7 +54,7 @@ const draft = async (draftYear, option1, option2 = 1) => {
       return text;
     } break;
     default: {
-      return help;
+      return [ help ];
     }
   }
 };

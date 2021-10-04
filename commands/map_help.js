@@ -1,4 +1,4 @@
-const COMMAND_MAP = require("../map_command.js");
+const COMMAND_MAP = require("../command_labels.js");
 
 const help = {
   entryPoint:

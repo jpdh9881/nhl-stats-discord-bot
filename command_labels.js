@@ -1,6 +1,6 @@
 const command = {
   // Format:
-  //  [immutable, internal command identifier]: what the user types
+  //  [immutable, internal command identifier]: command label (what the user types)
 
   entryPoint: "?",
 

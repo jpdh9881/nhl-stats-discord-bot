@@ -1,5 +1,5 @@
 const COMMAND_LABELS = require("../command_labels.js");
-const verify = require("./_lib/verify_args.js");
+const verify = require("./_lib/arg_type_verification.js");
 
 // Format for commands
 /**

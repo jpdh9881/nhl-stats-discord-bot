@@ -1,5 +1,5 @@
 const COMMAND_LABELS = require("../command_labels.js");
-const COMMAND_MODELS = require("../models/commands.js");
+const COMMAND_MODELS = require("../maps/command_models.js");
 const { getArguments, getDescriptions } = require("./help_message.js");
 
 const createHelpMessage = (command) => {

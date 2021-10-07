@@ -1,5 +1,5 @@
 const axios = require("axios");
-const api = require("../api.js").api;
+const api = require("../api_settings.js").api;
 const help = require("./map_help.js")["draft"];
 const getTeams = require("./teams/getTeams");
 const makeProspect = require("./prospect/makeProspect");

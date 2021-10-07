@@ -17,21 +17,21 @@ const verify = require("./_lib/verify_args.js");
  *                }
  *            }
  *            [else if argument has several verification functions]
- *            "option_1": {
+ *            "option1": {
  *              verify: ...
  *              descr: ...
  *              next: ...
  *            },
- *            "option_2": {
+ *            "option2": {
  *              verify: ...
  *            }
- *            [else if argument has discrete values (options preceded by "-")]
- *            "-discrete_option1": {
+ *            [else if argument has discrete/switch values (options preceded by "-")]
+ *            "-option1": {
  *                "arg2_name": {
  *                    ...etc.
  *                }
  *            },
- *            "-discrete_option2": {
+ *            "-option2": {
  *                "arg2_name": {
  *                    ...etc.
  *                }
@@ -57,8 +57,9 @@ const entryPoint = {
     "```" +
     "Description:\n" +
     "  Discord Bot serving up things from a public but officially-undocumented\n" +
-    "  NHL API! Thank you to Drew Hynes for documenting the API.\n" +
-    "  (Link to documentation repo: https://gitlab.com/dword4/nhlapi)\n" +
+    "  NHL API!\n" +
+    "  Thank you to Drew Hynes for documenting the API.\n" +
+    "    (Link: https://gitlab.com/dword4/nhlapi)\n" +
     "Commands:\n" +
     "  " + Object.values(COMMAND_LABELS).join("\n  ") +
     "\nHelp:\n" +
@@ -218,6 +219,7 @@ const team = {
 };
 
 const teams = {
+  // no arguments for teams command
 };
 
 module.exports = {

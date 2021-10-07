@@ -1,5 +1,5 @@
 const axios = require("axios");
-const api = require("../../api.js").api;
+const api = require("../../api_settings.js").api;
 
 /**
  *

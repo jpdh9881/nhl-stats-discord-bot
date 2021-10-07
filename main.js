@@ -2,7 +2,7 @@
 require("dotenv").config();
 const { Client, Intents } = require('discord.js')
 const COMMAND_LABEL = require("./command_labels.js");
-const verifyCommand = require("./commands/_verify_command.js");
+const verifyCommand = require("./maps/verify_commands.js");
 const runCommand = require("./command_functions.js");
 const createHelpMessage = require("./_lib/createHelpMessage.js");
 const splitMessage = require("./_lib/splitMessage.js");

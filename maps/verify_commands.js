@@ -1,4 +1,4 @@
-const models = require("../models/commands");
+const models = require("./command_models");
 
 const verifyCommand = (command, args) => {
    const model = models[command];
@@ -11,7 +11,7 @@ const verifyCommand = (command, args) => {
    let placeInModel = model.next;
    while (placeInModel) {
       const arg = args[argsIndex];
-      const argName = Object.keys(placeInModel)[0]; // there will only ever be 1!
+      const argName = Object.keys(placeInModel)[0];
       if (placeInModel[argName].verify) {
          // - there's a first-class verify function associated with this option
          if (!placeInModel[argName].verify(arg)) {

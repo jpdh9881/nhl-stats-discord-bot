@@ -1,10 +1,10 @@
-const entryPoint = require("./commands/entry_point.js");
-const draft = require("./commands/draft.js");
-const player = require("./commands/player.js");
-const prospect = require("./commands/prospect.js");
-const schedule = require("./commands/schedule.js");
-const team = require("./commands/team.js");
-const teams = require("./commands/teams.js");
+const entryPoint = require("../commands/entry_point.js");
+const draft = require("../commands/draft.js");
+const player = require("../commands/player.js");
+const prospect = require("../commands/prospect.js");
+const schedule = require("../commands/schedule.js");
+const team = require("../commands/team.js");
+const teams = require("../commands/teams.js");
 
 const runCommand = {
   entryPoint,

@@ -1,4 +1,4 @@
-const config = require("../models/commands").entryPoint;
+const config = require("../maps/command_models").entryPoint;
 
 const entryPoint = () => {
   return config.help;

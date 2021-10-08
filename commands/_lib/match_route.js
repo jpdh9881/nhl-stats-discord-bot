@@ -45,7 +45,7 @@ const matchRoute = (command, userArgs) => {
                routesOfSameLength = routesOfSameLength.filter(args => args[argNum] === arg);
                // there is only one route left && we have checked ALL user arguments? => this is our route
                if (routesOfSameLength.length === 1 && argNum === userArgsSplit.length - 1) {
-                  return routesOfSameLength[0];
+                  return routesOfSameLength[0].join(" ");
                }
                argNum++;
             } else {
@@ -62,7 +62,7 @@ const matchRoute = (command, userArgs) => {
                routesOfSameLength = routesOfSameLength.filter(args => args[argNum] === arg);
                // there is only one route left && we have checked ALL user arguments? => this is our route
                if (routesOfSameLength.length === 1 && argNum === userArgsSplit.length - 1) {
-                  return routesOfSameLength[0];
+                  return routesOfSameLength[0].join(" ");
                }
                argNum++;
             } else {

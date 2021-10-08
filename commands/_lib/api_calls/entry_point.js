@@ -1,5 +1,7 @@
-const entryPoint = () => {
-  return config;
+const help = () => {
+  return "HELP!";
 };
 
-module.exports = entryPoint;
+module.exports = {
+  help,
+};

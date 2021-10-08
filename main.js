@@ -4,13 +4,10 @@ const { Client, Intents } = require('discord.js')
 const { isCommand, commandFromLabel } = require("./commands/labels.js");
 const { getCommand } = require("./commands/commands.js");
 const matchRoute = require("./commands/_lib/match_route.js");
-// const verifyCommand = require("./maps/verify_commands.js");
-// const runCommand = require("./command_functions.js");
-// const createHelpMessage = require("./_lib/createHelpMessage.js");
+const removeSwitchesFromArgs = require("./_lib/remove_switches_from_args.js");
 const splitMessage = require("./_lib/splitMessage.js");
 
 const ERROR_TAG = "	༼ ༎ຶ ෴ ༎ຶ༽ "; // monster - http://asciimoji.com/
-const ERROR_FORMAT = "Something wrong with your command. Use the -help switch for help.";
 
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
@@ -26,7 +23,7 @@ client.on('messageCreate', async message => {
     const userCommand = split[0];
 
     if (isCommand(userCommand)) {
-      const args = split.slice(1);
+      const userArgs = split.slice(1);
 
       let text;
       let helpCommand;
@@ -35,7 +32,7 @@ client.on('messageCreate', async message => {
         if (!commandId) {
           throw `${userCommand} is not a recognized command.`;
         }
-        const route = matchRoute(commandId, args.join(" "));
+        const route = matchRoute(commandId, userArgs.join(" "));
         if (Array.isArray(route)) {
           if (route[0] === "too-many-args") {
             throw `${userCommand} command doesn't support that many arguments.`;
@@ -46,7 +43,7 @@ client.on('messageCreate', async message => {
           }
         }
         const command = getCommand(commandId);
-        const text = await command.runRoute(route, args);
+        const text = await command.runRoute(route, removeSwitchesFromArgs(userArgs));
 
         // switch(userCommand) {
         //   case COMMAND_LABEL["entryPoint"]: {

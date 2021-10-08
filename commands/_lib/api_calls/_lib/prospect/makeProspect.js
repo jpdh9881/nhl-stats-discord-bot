@@ -2,10 +2,10 @@ const makeProspect = (prospect, pick, teamCode) => {
   const p = pick, pr = prospect;
 
   let text;
-  let name = pr.fullName
+  let name = pr?.fullName;
   let age = "";
   // Prospects from old drafts don't have prospect records
-  if (prospect) {
+  if (pr) {
     const diff = new Date(Math.abs(Date.now() - (new Date(pr.birthDate))));
     age = diff.getFullYear() - 1970; // https://stackoverflow.com/questions/11346069/how-to-get-difference-in-year-where-dates-are-in-yyyy-mm-dd
     name = pr.firstName + " " + pr.lastName;
@@ -34,7 +34,6 @@ const makeProspect = (prospect, pick, teamCode) => {
   const Y = p?.year;
 
   text =
-    `\`\`\`` +
     `${name}\n` +
     `  ${POS} -- shoots/catches ${SH_CA}\n` +
     `  Born ${B_D} -- ${B_C}, ${B_SP}, ${B_CO}\n` +
@@ -54,8 +53,7 @@ const makeProspect = (prospect, pick, teamCode) => {
     `  Prospect Category: ${P_C}\n` +
     `  Draft Status: ${D_S}\n` +
     `  -----\n` +
-    `  (player id: ${PL_ID}, prospect id: ${PR_ID})\n` +
-    `\`\`\``;
+    `  (player id: ${PL_ID}, prospect id: ${PR_ID})\n`;
 
   return text;
 };

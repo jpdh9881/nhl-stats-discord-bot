@@ -4,11 +4,11 @@
 const draft = {
   draftYear: (value) => {
     // https://en.wikipedia.org/wiki/NHL_Entry_Draft#Selection_order_and_draft_lottery
-      //  - 1963 was first draft
-      if (value.length === 4 && value.match(/(\d\d\d\d)/) && Number.parseInt(value) >= 1963) {
-        return true;
-      }
-      return false;
+    //  - 1963 was first draft
+    if (value.length === 4 && value.match(/(\d\d\d\d)/) && Number.parseInt(value) >= 1963) {
+      return true;
+    }
+    return false;
   },
   roundNum: (value) => {
     if (value.match(/^[0-9]{1,2}$/) && Number.parseInt(value) > 0 && Number.parseInt(value) <= 25) {
@@ -52,6 +52,7 @@ module.exports = {
   "{roundNum}": draft.roundNum,
   "{pickNum}": draft.pickNum,
   "{playerId}": personId,
+  "{prospectId}": personId,
   "{teamCode}": teamCode,
   "{YYYY-MM-DD}": datetime.YYYY_MM_DD,
 };

@@ -2,18 +2,20 @@ const axios = require("axios");
 const api = require("../../../api_settings.js").api;
 const makeProspect = require("./_lib/prospect/makeProspect");
 
-const prospect = async (prospectId) => {
-  const res = await axios.get(`${api}prospects/${prospectId}`);
-
-  if (prospectId === "-help") {
-    return help;
-  }
-
-  if (res.data.prospects[0]) {
-    return makeProspect(res.data.prospects[0]);
-  } else {
-    return "Invalid prospect id";
+const info = async (prospectId) => {
+  console.log(prospectId);
+  try {
+    const res = await axios.get(`${api}draft/prospects/${prospectId}`);
+    if (res.data.prospects[0]) {
+      return makeProspect(res.data.prospects[0]);
+    } else {
+      throw "";
+    }
+  } catch (e) {
+    return "Prospect not found";
   }
 };
 
-module.exports = prospect;
+module.exports = {
+  info
+};

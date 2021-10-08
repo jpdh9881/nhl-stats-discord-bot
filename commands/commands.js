@@ -11,17 +11,20 @@ const teamAPI = require("./_lib/api_calls/team.js");
 const teamsAPI = require("./_lib/api_calls/teams.js");
 
 // Route Definitions
+const entryPoint = new Command("entryPoint");
+entryPoint.addRouteAndFunction("", entryPointAPI.help);
+
 /**
  * (2 arguments)
  * Endpoint: https://statsapi.web.nhl.com/api/v1/draft
  * Endpoint: https://statsapi.web.nhl.com/api/v1/draft/prospects/
  */
 const draft = new Command("draft");
-draft.addRouteAndFunction("", null);
-draft.addRouteAndFunction("{draftYear} -round", null);
-draft.addRouteAndFunction("{draftYear} -round {roundNum}", null);
-draft.addRouteAndFunction("{draftYear} -pick", null);
-draft.addRouteAndFunction("{draftYear} -pick {pickNum}", null);
+draft.addRouteAndFunction("", draftAPI.round);
+draft.addRouteAndFunction("{draftYear} -round", draftAPI.round);
+draft.addRouteAndFunction("{draftYear} -round {roundNum}", draftAPI.round);
+draft.addRouteAndFunction("{draftYear} -pick", draftAPI.pick);
+draft.addRouteAndFunction("{draftYear} -pick {pickNum}", draftAPI.pick);
 
 /**
  * (2 arguments)
@@ -38,17 +41,19 @@ player.addRouteAndFunction("{playerId} -stats", playerAPI.stats);
  * Endpoint: https://statsapi.web.nhl.com/api/v1/draft/prospects/
  */
 const prospect = new Command("prospect");
-prospect.addRouteAndFunction("{prospectId}", null);
+prospect.addRouteAndFunction("{prospectId}", prospectAPI.info);
 
 /**
  * (1 argument)
  * Endpoint: https://statsapi.web.nhl.com/api/v1/schedule
  */
 const schedule = new Command("schedule");
-schedule.addRouteAndFunction("", null);
-schedule.addRouteAndFunction("{teamCode}", null);
-schedule.addRouteAndFunction("{teamCode} {YYYY-MM-DD}", null);
-schedule.addRouteAndFunction("{YYYY-MM-DD}", null);
+schedule.addRouteAndFunction("", scheduleAPI.byDateAllTeams);
+schedule.addRouteAndFunction("{teamCode}", scheduleAPI.byDateTeam);
+schedule.addRouteAndFunction("{teamCode} {YYYY-MM-DD}", scheduleAPI.byDateTeam);
+schedule.addRouteAndFunction("{teamCode} -next", (teamCode) => scheduleAPI.byTeamNext(teamCode));
+schedule.addRouteAndFunction("{teamCode} -month", (teamCode) => scheduleAPI.byDateRangeTeam(teamCode, "month"));
+schedule.addRouteAndFunction("{YYYY-MM-DD}", scheduleAPI.byDateAllTeams);
 
 /**
  * (2 arguments)
@@ -57,20 +62,21 @@ schedule.addRouteAndFunction("{YYYY-MM-DD}", null);
  * Endpoint: https://statsapi.web.nhl.com/api/v1/teams/${teamId}/stats
  */
 const team = new Command("team");
-team.addRouteAndFunction("{teamCode}", null);
-team.addRouteAndFunction("{teamCode} -info", null);
-team.addRouteAndFunction("{teamCode} -roster", null);
-team.addRouteAndFunction("{teamCode} -stats", null);
+team.addRouteAndFunction("{teamCode}", teamAPI.teamInfo);
+team.addRouteAndFunction("{teamCode} -info", teamAPI.teamInfo);
+team.addRouteAndFunction("{teamCode} -roster", teamAPI.teamRoster);
+team.addRouteAndFunction("{teamCode} -stats", teamAPI.teamStats);
 
 /**
  * (0 arguments)
  * Endpoint: https://statsapi.web.nhl.com/api/v1/teams/
  */
 const teams = new Command("teams");
-teams.addRouteAndFunction("", null);
+teams.addRouteAndFunction("", teamsAPI.teamList);
 
 // "Register" commands so they're accessible
 const commands = [];
+commands.push(entryPoint);
 commands.push(draft);
 commands.push(player);
 commands.push(prospect);
@@ -79,7 +85,6 @@ commands.push(team);
 commands.push(teams);
 
 // Helper functions
-
 function getCommand(command) {
   const index = commands.findIndex(cmd => cmd.getIdentifier() === command);
   return commands[index];

@@ -15,7 +15,6 @@ const command = {
 };
 
 const isCommand = (cmd) => {
-  console.log(cmd);
   if (commandFromLabel(cmd)) {
     return true;
   }
@@ -23,7 +22,7 @@ const isCommand = (cmd) => {
 };
 const commandFromLabel = (lbl) => {
   const match = Object.entries(command).find(([c, l]) => l === lbl? true : false);
-  return match[0];
+  return match? match[0] : undefined;
 };
 const labelFromCommand = (cmd) => {
   return command[cmd];

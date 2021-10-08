@@ -1,9 +1,9 @@
 const axios = require("axios");
-const api = require("../api_settings.js").api;
+const api = require("../../../api_settings.js").api;
 const help = require("./map_help.js")["schedule"];
-const getTeams = require("./teams/getTeams.js");
-const makeGame = require("./schedule/makeGame.js");
-const makeSchedule = require("./schedule/makeSchedule.js");
+const getTeams = require("./_lib/teams/getTeams.js");
+const makeGame = require("./_lib/schedule/makeGame.js");
+const makeSchedule = require("./_lib/schedule/makeSchedule.js");
 
 const schedule = async (option1, option2) => {
   // Get team abbreviations

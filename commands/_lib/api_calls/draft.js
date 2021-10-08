@@ -1,9 +1,9 @@
 const axios = require("axios");
-const api = require("../api_settings.js").api;
+const api = require("../../../api_settings.js").api;
 const help = require("./map_help.js")["draft"];
-const getTeams = require("./teams/getTeams");
-const makeProspect = require("./prospect/makeProspect");
-const makeRound = require("./draft/makeRound");
+const getTeams = require("./_lib/teams/getTeams");
+const makeProspect = require("./_lib/prospect/makeProspect");
+const makeRound = require("./_lib/draft/makeRound");
 
 const draft = async (draftYear, option1, option2 = 1) => {
   // Get team abbreviations

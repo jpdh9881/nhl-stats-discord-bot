@@ -1,4 +1,4 @@
-const padLeft = require("../_lib/format.js").padLeft;
+const padLeft = require("../format.js").padLeft;
 
 const makePlayer = ({ stats, info, season }) => {
   if (stats) {

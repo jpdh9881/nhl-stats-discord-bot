@@ -1,4 +1,4 @@
-const getTeams = require("./teams/getTeams.js");
+const getTeams = require("./_lib/teams/getTeams.js");
 
 /**
  *

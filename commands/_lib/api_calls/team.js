@@ -1,10 +1,10 @@
 const axios = require("axios");
-const api = require("../api_settings.js").api;
+const api = require("../../../api_settings.js").api;
 const help = require("./map_help.js")["team"];
-const getTeams = require("./teams/getTeams.js");
-const makeInfo = require("./team/makeInfo.js");
-const makeRoster = require("./team/makeRoster.js");
-const makeStats = require("./team/makeStats.js");
+const getTeams = require("./_lib/teams/getTeams.js");
+const makeInfo = require("./_lib/team/makeInfo.js");
+const makeRoster = require("./_lib/team/makeRoster.js");
+const makeStats = require("./_lib/team/makeStats.js");
 
 const team = async (teamCode, option1) => {
   // Get team ID

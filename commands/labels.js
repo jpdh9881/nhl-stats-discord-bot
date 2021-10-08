@@ -14,4 +14,15 @@ const command = {
   teams: "?teams"
 };
 
-module.exports = command;
+const commandFromLabel = (lbl) => {
+  const match = Object.entries(command).find(([c, l]) => l === lbl? true : false);
+  return match[0];
+};
+const labelFromCommand = (cmd) => {
+  return command[cmd];
+};
+
+module.exports = {
+  commandFromLabel,
+  labelFromCommand,
+};

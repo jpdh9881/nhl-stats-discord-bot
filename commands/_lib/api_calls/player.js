@@ -1,6 +1,6 @@
 const axios = require("axios");
-const api = require("../api_settings.js").api;
-const makePlayer = require("./player/makePlayer.js");
+const api = require("../../../api_settings.js").api;
+const makePlayer = require("./_lib/player/makePlayer.js");
 
 const info = async (playerId) => {
   const res = await axios.get(`${api}people/${playerId}`);

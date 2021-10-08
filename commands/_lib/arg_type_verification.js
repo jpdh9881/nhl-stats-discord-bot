@@ -51,7 +51,7 @@ module.exports = {
   "{draftYear}": draft.draftYear,
   "{roundNum}": draft.roundNum,
   "{pickNum}": draft.pickNum,
-  "{personId}": personId,
+  "{playerId}": personId,
   "{teamCode}": teamCode,
   "{YYYY-MM-DD}": datetime.YYYY_MM_DD,
 };

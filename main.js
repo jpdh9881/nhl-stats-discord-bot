@@ -1,10 +1,12 @@
 // Modules
 require("dotenv").config();
 const { Client, Intents } = require('discord.js')
-const COMMAND_LABEL = require("./command_labels.js");
-const verifyCommand = require("./maps/verify_commands.js");
-const runCommand = require("./command_functions.js");
-const createHelpMessage = require("./_lib/createHelpMessage.js");
+const { commandFromLabel, labelFromCommand } = require("./commands/labels.js");
+const { runRoute } = require("./commands/routes.js");
+const matchRoute = require("./commands/_lib/match_route.js");
+// const verifyCommand = require("./maps/verify_commands.js");
+// const runCommand = require("./command_functions.js");
+// const createHelpMessage = require("./_lib/createHelpMessage.js");
 const splitMessage = require("./_lib/splitMessage.js");
 
 const ERROR_TAG = ":o";
@@ -22,87 +24,98 @@ client.on('messageCreate', async message => {
   if (!message.author.bot) {
     const split = message.content.split(" ");
     const userCommand = split[0];
-    const args = split.slice(1);
 
-    let text;
-    let helpCommand;
-    try {
-      switch(userCommand) {
-        case COMMAND_LABEL["entryPoint"]: {
-          const text = runCommand["entryPoint"]();
-          await message.reply(text);
-        } break;
-        case COMMAND_LABEL["draft"]: {
-          const valid = verifyCommand("draft", args);
-          if (valid === "help") {
-            helpCommand = "draft";
-          } else if (valid) {
-            text = await runCommand["draft"](...args);
-          } else {
-            throw new Error (ERROR_FORMAT);
-          }
-        } break;
-        case COMMAND_LABEL["player"]: {
-          const valid = verifyCommand("player", args);
-          if (valid === "help") {
-            helpCommand = "player";
-          } else if (valid) {
-            text = await runCommand["player"](...args);
-          } else {
-            throw new Error (ERROR_FORMAT);
-          }
-        } break;
-        case COMMAND_LABEL["prospect"]: {
-          const valid = verifyCommand("prospect", args);
-          if (valid === "help") {
-            helpCommand = "prospect";
-          } else if (valid) {
-            text = await runCommand["prospect"](...args);
-          } else {
-            throw new Error (ERROR_FORMAT);
-          }
-        } break;
-        case COMMAND_LABEL["schedule"]: {
-          const valid = verifyCommand("schedule", args);
-          if (valid === "help") {
-            helpCommand = "schedule";
-          } else if (valid) {
-            text = await runCommand["schedule"](...args);
-          } else {
-            throw new Error (ERROR_FORMAT);
-          }
-        } break;
-        case COMMAND_LABEL["team"]: {
-          const valid = verifyCommand("team", args);
-          if (valid === "help") {
-            helpCommand = "team";
-          } else if (valid) {
-            text = await runCommand["team"](...args);
-          } else {
-            throw new Error (ERROR_FORMAT);
-          }
-        } break;
-        case COMMAND_LABEL["teams"]: {
-          const text = await runCommand["teams"]();
+    if (userCommand.startsWith(labelFromCommand("entryPoint"))) {
+      const args = split.slice(1);
+
+      let text;
+      let helpCommand;
+      try {
+        const command = commandFromLabel(userCommand);
+        if (!command) {
+          throw `${userCommand} is not a recognized command.`;
+        }
+        const route = matchRoute(command, args.join(" "));
+        const text = await runRoute(command, route)(args);
+
+        // switch(userCommand) {
+        //   case COMMAND_LABEL["entryPoint"]: {
+        //     const text = runCommand["entryPoint"]();
+        //     await message.reply(text);
+        //   } break;
+        //   case COMMAND_LABEL["draft"]: {
+        //     const valid = verifyCommand("draft", args);
+        //     if (valid === "help") {
+        //       helpCommand = "draft";
+        //     } else if (valid) {
+        //       text = await runCommand["draft"](...args);
+        //     } else {
+        //       throw new Error (ERROR_FORMAT);
+        //     }
+        //   } break;
+        //   case COMMAND_LABEL["player"]: {
+        //     const valid = verifyCommand("player", args);
+        //     if (valid === "help") {
+        //       helpCommand = "player";
+        //     } else if (valid) {
+        //       text = await runCommand["player"](...args);
+        //     } else {
+        //       throw new Error (ERROR_FORMAT);
+        //     }
+        //   } break;
+        //   case COMMAND_LABEL["prospect"]: {
+        //     const valid = verifyCommand("prospect", args);
+        //     if (valid === "help") {
+        //       helpCommand = "prospect";
+        //     } else if (valid) {
+        //       text = await runCommand["prospect"](...args);
+        //     } else {
+        //       throw new Error (ERROR_FORMAT);
+        //     }
+        //   } break;
+        //   case COMMAND_LABEL["schedule"]: {
+        //     const valid = verifyCommand("schedule", args);
+        //     if (valid === "help") {
+        //       helpCommand = "schedule";
+        //     } else if (valid) {
+        //       text = await runCommand["schedule"](...args);
+        //     } else {
+        //       throw new Error (ERROR_FORMAT);
+        //     }
+        //   } break;
+        //   case COMMAND_LABEL["team"]: {
+        //     const valid = verifyCommand("team", args);
+        //     if (valid === "help") {
+        //       helpCommand = "team";
+        //     } else if (valid) {
+        //       text = await runCommand["team"](...args);
+        //     } else {
+        //       throw new Error (ERROR_FORMAT);
+        //     }
+        //   } break;
+        //   case COMMAND_LABEL["teams"]: {
+        //     const text = await runCommand["teams"]();
+        //     const texts = splitMessage(text);
+        //     for (const piece of texts) {
+        //       await message.reply(piece);
+        //     }
+        //   } break;
+        // }
+
+        if (text) {
           const texts = splitMessage(text);
           for (const piece of texts) {
             await message.reply(piece);
           }
-        } break;
-      }
-
-      if (text) {
-        const texts = splitMessage(text);
-        for (const piece of texts) {
-          await message.reply(piece);
         }
-      } else if (helpCommand) {
-        const help = createHelpMessage(helpCommand);
-        await message.reply(help);
+        // } else if (helpCommand) {
+        //   const help = createHelpMessage(helpCommand);
+        //   await message.reply(help);
+        // }
+      } catch (error) {
+        console.log(error);
+        await message.reply(ERROR_TAG + " - " + error);
       }
-    } catch (error) {
-      console.log(error);
-      await message.reply(ERROR_TAG + " - " + error);
     }
   }
 })

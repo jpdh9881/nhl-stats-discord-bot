@@ -1,4 +1,4 @@
-const commandRoutes = require("../command_routes.js");
+const { getRoutes } = require("../routes.js");
 const verifyArgType = require("./arg_type_verification");
 
 /**
@@ -10,7 +10,7 @@ const verifyArgType = require("./arg_type_verification");
  */
 const matchRoute = (command, userArgs) => {
    const userArgsSplit = userArgs.split(" ");
-   const routesSplit = Object.keys(commandRoutes[command].routes).map(r => r.split(" "));
+   const routesSplit = Object.keys(getRoutes(command)).map(r => r.split(" "));
    let routesOfSameLength = routesSplit.filter(args => {
       if (args.length === userArgsSplit.length) {
          return true;
@@ -37,6 +37,7 @@ const matchRoute = (command, userArgs) => {
             // Arg which must correspond to a {type}
 
             // - is user's arg of this {type}?
+            console.log(arg);
             if (verifyArgType[arg](userArg)) {
                // yes: remove all routes which don't correspond to this {type} at this position in the route
                routesOfSameLength = routesOfSameLength.filter(args => args[argNum] === arg);

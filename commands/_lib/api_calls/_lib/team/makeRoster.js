@@ -1,6 +1,6 @@
-const padLeft = require("../_lib/format.js").padLeft;
-const padRight = require("../_lib/format.js").padRight;
-const getLongestString = require("../_lib/format").getLongestString;
+const padLeft = require("../format.js").padLeft;
+const padRight = require("../format.js").padRight;
+const getLongestString = require("../format").getLongestString;
 
 const makeRoster = (roster) => {
 

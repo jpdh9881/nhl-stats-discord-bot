@@ -1,6 +1,5 @@
 const axios = require("axios");
 const api = require("../../../api_settings.js").api;
-const help = require("./map_help.js")["team"];
 const getTeams = require("./_lib/teams/getTeams.js");
 const makeInfo = require("./_lib/team/makeInfo.js");
 const makeRoster = require("./_lib/team/makeRoster.js");

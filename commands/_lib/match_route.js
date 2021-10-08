@@ -1,16 +1,15 @@
-const { getRoutes } = require("../routes.js");
+const { getCommand } = require("../commands.js");
 const verifyArgType = require("./arg_type_verification");
 
 /**
  * Matches a user's arguments string with a route, if any
  * @param {string} command
  * @param {string} userArgs
- * @returns {string} route
- * @throws {array} [error_type, error_msg]
+ * @returns {string, array} route / [ errorType, errorMsg ]
  */
 const matchRoute = (command, userArgs) => {
    const userArgsSplit = userArgs.split(" ");
-   const routesSplit = Object.keys(getRoutes(command)).map(r => r.split(" "));
+   const routesSplit = Object.keys(getCommand(command).getRoutes()).map(r => r.split(" "));
    let routesOfSameLength = routesSplit.filter(args => {
       if (args.length === userArgsSplit.length) {
          return true;
@@ -18,7 +17,7 @@ const matchRoute = (command, userArgs) => {
    });
 
    if (routesOfSameLength.length === 0) {
-      throw ["too-many-args"];
+      return ["too-many-args"];
    }
 
    let argNum = 0;
@@ -33,11 +32,14 @@ const matchRoute = (command, userArgs) => {
             // No args
 
             return routesOfSameLength[routeNum];
+         } else if (userArg === "" && arg !== "") {
+            // Missing args
+
+            return ["no-arg"];
          } else if (arg.startsWith("{")) {
             // Arg which must correspond to a {type}
 
             // - is user's arg of this {type}?
-            console.log(arg);
             if (verifyArgType[arg](userArg)) {
                // yes: remove all routes which don't correspond to this {type} at this position in the route
                routesOfSameLength = routesOfSameLength.filter(args => args[argNum] === arg);
@@ -74,7 +76,7 @@ const matchRoute = (command, userArgs) => {
       }
    }
 
-   throw ["arg", userArgsSplit[argNum]];
+   return ["arg", userArgsSplit[argNum]];
 };
 
 // console.log(matchRoute("draft", ""));

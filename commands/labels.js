@@ -14,6 +14,13 @@ const command = {
   teams: "?teams"
 };
 
+const isCommand = (cmd) => {
+  console.log(cmd);
+  if (commandFromLabel(cmd)) {
+    return true;
+  }
+  return false;
+};
 const commandFromLabel = (lbl) => {
   const match = Object.entries(command).find(([c, l]) => l === lbl? true : false);
   return match[0];
@@ -23,6 +30,7 @@ const labelFromCommand = (cmd) => {
 };
 
 module.exports = {
+  isCommand,
   commandFromLabel,
   labelFromCommand,
 };

@@ -1,6 +1,5 @@
 const axios = require("axios");
 const api = require("../../../api_settings.js").api;
-const help = require("./map_help.js")["prospect"];
 const makeProspect = require("./_lib/prospect/makeProspect");
 
 const prospect = async (prospectId) => {

@@ -1,6 +1,5 @@
 const axios = require("axios");
 const api = require("../../../api_settings.js").api;
-const help = require("./map_help.js")["schedule"];
 const getTeams = require("./_lib/teams/getTeams.js");
 const makeGame = require("./_lib/schedule/makeGame.js");
 const makeSchedule = require("./_lib/schedule/makeSchedule.js");

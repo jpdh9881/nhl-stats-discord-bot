@@ -1,15 +1,15 @@
 // Modules
 require("dotenv").config();
 const { Client, Intents } = require('discord.js')
-const { commandFromLabel, labelFromCommand } = require("./commands/labels.js");
-const { runRoute } = require("./commands/routes.js");
+const { isCommand, commandFromLabel } = require("./commands/labels.js");
+const { getCommand } = require("./commands/commands.js");
 const matchRoute = require("./commands/_lib/match_route.js");
 // const verifyCommand = require("./maps/verify_commands.js");
 // const runCommand = require("./command_functions.js");
 // const createHelpMessage = require("./_lib/createHelpMessage.js");
 const splitMessage = require("./_lib/splitMessage.js");
 
-const ERROR_TAG = ":o";
+const ERROR_TAG = "	༼ ༎ຶ ෴ ༎ຶ༽ "; // monster - http://asciimoji.com/
 const ERROR_FORMAT = "Something wrong with your command. Use the -help switch for help.";
 
 const client = new Client({
@@ -25,18 +25,28 @@ client.on('messageCreate', async message => {
     const split = message.content.split(" ");
     const userCommand = split[0];
 
-    if (userCommand.startsWith(labelFromCommand("entryPoint"))) {
+    if (isCommand(userCommand)) {
       const args = split.slice(1);
 
       let text;
       let helpCommand;
       try {
-        const command = commandFromLabel(userCommand);
-        if (!command) {
+        const commandId = commandFromLabel(userCommand);
+        if (!commandId) {
           throw `${userCommand} is not a recognized command.`;
         }
-        const route = matchRoute(command, args.join(" "));
-        const text = await runRoute(command, route)(args);
+        const route = matchRoute(commandId, args.join(" "));
+        if (Array.isArray(route)) {
+          if (route[0] === "too-many-args") {
+            throw `${userCommand} command doesn't support that many arguments.`;
+          } else if (route[0] === "no-arg") {
+            throw `${userCommand} command doesn't support zero arguments.`;
+          } else if (route[0] === "arg") {
+            throw `Problem with argument "${route[1]}"`;
+          }
+        }
+        const command = getCommand(commandId);
+        const text = await command.runRoute(route, args);
 
         // switch(userCommand) {
         //   case COMMAND_LABEL["entryPoint"]: {

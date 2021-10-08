@@ -1,7 +1,5 @@
-const config = require("../maps/command_models").entryPoint;
-
 const entryPoint = () => {
-  return config.help;
+  return config;
 };
 
 module.exports = entryPoint;

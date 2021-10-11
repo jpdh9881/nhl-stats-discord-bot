@@ -1,7 +1,16 @@
 const commandRegister = require("../../../../../command_register.js");
 const makeProspect = (prospect, pick) => {
   const p = pick, pr = prospect;
-  const teamCode = commandRegister.global.teams["id:teamCode"][pick.team.id];
+
+  // pick object will only be passed if this makeProspect call came from draft command
+  //  - no route to it through prospect command
+  let T_C, R, P_O, Y;
+  if (p) {
+    T_C = commandRegister.global.teams["id:teamCode"][pick.team.id];
+    R = p?.round;
+    P_O = p?.pickOverall;
+    Y = p?.year;
+  }
 
   let text;
   let name = pr?.fullName;
@@ -28,12 +37,6 @@ const makeProspect = (prospect, pick) => {
   const PL_ID = pr?.nhlPlayerId? pr?.nhlPlayerId : "";
   const PR_ID = pr?.id ? pr?.id : "";
 
-  // pick object + teamCode
-  const T_C = teamCode;
-  const R = p?.round;
-  const P_O = p?.pickOverall;
-  const Y = p?.year;
-
   text =
     `${name}\n` +
     `  ${POS} -- shoots/catches ${SH_CA}\n` +
@@ -41,7 +44,7 @@ const makeProspect = (prospect, pick) => {
     `  [${age} yrs. ago]\n` +
     `  Height ${H} -- Weight ${W}\n`;
 
-  if (pick && teamCode) {
+  if (pick) {
     text +=
       `  -----\n` +
       `  Drafted by ${T_C}\n` +

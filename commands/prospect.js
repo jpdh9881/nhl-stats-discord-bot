@@ -8,7 +8,6 @@ const prospectAPI = require("./_lib/api_calls/prospect_api.js");
 const prospect = new Command("prospect");
 prospect.addRoute("{prospectId}", prospectAPI.info, "get general information related to the prospect");
 prospect.setHelp({
-  prototype: "arg1",
   description: [
     "{prospectId}: the number id of the prospect",
   ],

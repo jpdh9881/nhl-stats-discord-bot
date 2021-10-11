@@ -42,7 +42,7 @@ commandRegister
               }
             }
 
-            const text = await route.run(removeSwitchesFromArgs(userArgs));
+            const text = await route.run(removeSwitchesFromArgs(userArgs), userArgs);
 
             if (text) {
               const texts = splitMessage(text);

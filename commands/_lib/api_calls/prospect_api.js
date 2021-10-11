@@ -5,12 +5,13 @@ const makeProspect = require("./_lib/prospect/makeProspect");
 const info = async (prospectId) => {
   try {
     const res = await axios.get(`${api}draft/prospects/${prospectId}`);
-    if (res.data.prospects[0]) {
+    if (res.data.prospects.length > 0) {
       return makeProspect(res.data.prospects[0]);
     } else {
       throw "";
     }
   } catch (e) {
+    console.log(e);
     return "Prospect not found";
   }
 };

@@ -21,9 +21,9 @@ class Command {
 
     // Set the default routes
     //  - these can be overriden by this.addRoute()
-    this.routes.push(new Route("", this.getHelp, "this help message"));
-    this.routes.push(new Route("-h", this.getHelp, "this help message"));
-    this.routes.push(new Route("-help", this.getHelp, "this help message"));
+    this.routes.push(new Route(this.identifier, "", this.getHelp, "this help message"));
+    this.routes.push(new Route(this.identifier, "-h", this.getHelp, "this help message"));
+    this.routes.push(new Route(this.identifier, "-help", this.getHelp, "this help message"));
 
     console.log(` - created command "${this.identifier}"`);
   }
@@ -36,9 +36,9 @@ class Command {
   addRoute = (str, fn, help) => {
     const existingIndex = this.routes.findIndex(r => r.str === str);
     if (existingIndex > -1) {
-      this.routes[existingIndex] = new Route(str, fn, help);
+      this.routes[existingIndex] = new Route(this.identifier, str, fn, help);
     } else {
-      this.routes.push(new Route(str, fn, help));
+      this.routes.push(new Route(this.identifier, str, fn, help));
     }
   };
   setPrototype = (prototype) => {

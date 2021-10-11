@@ -1,10 +1,12 @@
 class Route {
+  commandId;
   str;
   arr;
   fn;
   help;
 
-  constructor(str, fn, help = null) {
+  constructor(commandId, str, fn, help = null) {
+    this.commandId = commandId;
     this.str = str;
     this.arr = str.split(" ");
     this.fn = fn;
@@ -27,8 +29,9 @@ class Route {
     return this.arr.length;
   }
 
-  run = (args) => {
-    return this.fn(...args);
+  run = (argsCleaned, argsFull) => {
+    console.log(` >>> Running Route "_${this.commandId} ${this.getString()}" - "_${this.commandId} ${argsFull.join(" ")}"`);
+    return this.fn(...argsCleaned);
   };
 }
 

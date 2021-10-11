@@ -6,7 +6,7 @@ const { today, getDateRange } = require("./_lib/utility.js");
 const getTeams = require("./_lib/teams/getTeams.js");
 const makeSchedule = require("./_lib/schedule/makeSchedule.js");
 
-const byDateAllTeams = async (date = today()) => {
+const byDateAllTeams = async (date = today(true)) => {
   // Get team abbreviations
   const teamIdMap = await getTeams({ format: "id:abbrev", raw: true });
 
@@ -26,7 +26,8 @@ const byDateAllTeams = async (date = today()) => {
 
 };
 
-const byDateTeam = async (teamCode, date = today()) => {
+const byDateTeam = async (teamCode, date = today(true)) => {
+  console.log(teamCode, date);
   // Get team abbreviations
   const teamIdMap = await getTeams({ format: "id:abbrev", raw: true });
 

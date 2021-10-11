@@ -1,8 +1,12 @@
+const Route = require("./Route.js");
+const matchRoute = require("../match_route.js");
+
 class Command {
   identifier;
-  routes = {};
+  routes = [];
   prototype;
 
+  // Instance methods
   constructor(identifier) {
     this.identifier = identifier;
   }
@@ -10,15 +14,10 @@ class Command {
   getIdentifier = () => {
     return this.identifier;
   };
-  getRoutes = () => {
-    return this.routes;
-  };
-  runRoute = (route, args) => {
-    return this.routes[route](...args);
-  };
+  matchRoute = (userArgs) => matchRoute(this.routes, userArgs);
 
-  addRouteAndFunction = (route, fn) => {
-    this.routes[route] = fn;
+  addRoute = (str, fn) => {
+    this.routes.push(new Route(str, fn));
   };
   setPrototype = (prototype) => {
     this.prototype = prototype;

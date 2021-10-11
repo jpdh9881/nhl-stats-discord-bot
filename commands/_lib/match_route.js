@@ -1,4 +1,3 @@
-const { getCommand } = require("../commands.js");
 const verifyArgType = require("./arg_type_verification");
 
 /**
@@ -7,11 +6,10 @@ const verifyArgType = require("./arg_type_verification");
  * @param {string} userArgs
  * @returns {string, array} route / [ errorType, errorMsg ]
  */
-const matchRoute = (command, userArgs) => {
-   const userArgsSplit = userArgs.split(" ");
-   const routesSplit = Object.keys(getCommand(command).getRoutes()).map(r => r.split(" "));
-   let routesOfSameLength = routesSplit.filter(args => {
-      if (args.length === userArgsSplit.length) {
+const matchRoute = (routes, userArgs) => {
+   const userArgsArray = userArgs.split(" ");
+   let routesOfSameLength = routes.filter(route => {
+      if (route.getArray().length === userArgsArray.length) {
          return true;
       }
    });
@@ -22,11 +20,11 @@ const matchRoute = (command, userArgs) => {
 
    let argNum = 0;
    // We want to eliminate all the routes which don't apply
-   while (routesOfSameLength.length > 0 && argNum < userArgsSplit.length) {
-      const userArg = userArgsSplit[argNum];
+   while (routesOfSameLength.length > 0 && argNum < userArgsArray.length) {
+      const userArg = userArgsArray[argNum];
 
-      for (const [routeNum, args] of routesOfSameLength.entries()) {
-         const arg = args[argNum];
+      for (const [routeNum, route] of routesOfSameLength.entries()) {
+         const arg = route.getArg(argNum);
 
          if (arg === "" && userArg === "") {
             // No args
@@ -42,15 +40,15 @@ const matchRoute = (command, userArgs) => {
             // - is user's arg of this {type}?
             if (verifyArgType[arg](userArg)) {
                // yes: remove all routes which don't correspond to this {type} at this position in the route
-               routesOfSameLength = routesOfSameLength.filter(args => args[argNum] === arg);
+               routesOfSameLength = routesOfSameLength.filter(r => r.getArg(argNum) === arg);
                // there is only one route left && we have checked ALL user arguments? => this is our route
-               if (routesOfSameLength.length === 1 && argNum === userArgsSplit.length - 1) {
-                  return routesOfSameLength[0].join(" ");
+               if (routesOfSameLength.length === 1 && argNum === userArgsArray.length - 1) {
+                  return routesOfSameLength[0];
                }
                argNum++;
             } else {
                // no: remove all routes which share this {type} at this position in the route
-               routesOfSameLength = routesOfSameLength.filter(args => args[argNum] !== arg);
+               routesOfSameLength = routesOfSameLength.filter(r => r.getArg(argNum) !== arg);
             }
             break;
          } else if (arg.startsWith("-")) {
@@ -59,24 +57,24 @@ const matchRoute = (command, userArgs) => {
             // - does user's arg match this route's -switch value?
             if (userArg === arg) {
                // yes: remove all routes which don't have this -switch value at this position
-               routesOfSameLength = routesOfSameLength.filter(args => args[argNum] === arg);
+               routesOfSameLength = routesOfSameLength.filter(r => r.getArg(argNum) === arg);
                // there is only one route left && we have checked ALL user arguments? => this is our route
-               if (routesOfSameLength.length === 1 && argNum === userArgsSplit.length - 1) {
-                  return routesOfSameLength[0].join(" ");
+               if (routesOfSameLength.length === 1 && argNum === userArgsArray.length - 1) {
+                  return routesOfSameLength[0];
                }
                argNum++;
             } else {
                // no: remove all routes which have this -switch value at this position
-               routesOfSameLength = routesOfSameLength.filter(args => args[argNum] !== arg);
+               routesOfSameLength = routesOfSameLength.filter(r => r.getArg(argNum) !== arg);
             }
             break;
          } else {
-            routesOfSameLength = routesOfSameLength.filter(args => args[argNum] !== arg);
+            routesOfSameLength = routesOfSameLength.filter(r => r.getArg(argNum) !== arg);
          }
       }
    }
 
-   return ["arg", userArgsSplit[argNum]];
+   return ["arg", userArgsArray[argNum]];
 };
 
 // console.log(matchRoute("draft", ""));

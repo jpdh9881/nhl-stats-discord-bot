@@ -7,6 +7,8 @@ class CommandRegister {
   };
 
   init = async () => {
+    console.log("Registering commands...");
+
     // Get the team map (id:teamCode) so we don't have to continually re-fetch it
     this.global.teams["id:teamCode"] = await getTeams({ format: "id:teamCode", raw: true });
 
@@ -25,6 +27,7 @@ class CommandRegister {
       "?team": require("./commands/team.js"),
       "?teams": require("./commands/teams.js"),
     };
+    console.log("Commands registered.");
   };
 
   isCommand = (label) => {

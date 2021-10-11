@@ -12,5 +12,15 @@ const teamAPI = require("./_lib/api_calls/team_api.js");
  team.addRoute("{teamCode} -info", teamAPI.teamInfo);
  team.addRoute("{teamCode} -roster", teamAPI.teamRoster);
  team.addRoute("{teamCode} -stats", teamAPI.teamStats);
+ team.setHelp({
+  description: [
+    "{teamCode}: three-letter team code",
+    "  (type \"?teams -list\" for a list of team codes)",
+  ],
+  examples: [
+    "TOR",
+    "TOR -info",
+  ],
+});
 
  module.exports = team;

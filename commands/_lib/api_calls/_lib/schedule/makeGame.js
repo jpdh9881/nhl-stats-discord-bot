@@ -1,3 +1,5 @@
+const commandRegister = require("../../../../../command_register.js");
+
 const makeGame = (game) => {
   const teamIdMap = commandRegister.global.teams["id:teamCode"];
   const teamCodeHome = teamIdMap[game.teams.home.team.id];

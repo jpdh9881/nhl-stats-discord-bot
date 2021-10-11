@@ -6,6 +6,13 @@ const teamsAPI = require("./_lib/api_calls/teams_api.js");
  * Endpoint: https://statsapi.web.nhl.com/api/v1/teams/
  */
  const teams = new Command("teams");
- teams.addRoute("", teamsAPI.teamList);
+ teams.addRoute("", teamsAPI.teamList, "list of teams (with teamCodes)");
+ teams.addRoute("-list", teamsAPI.teamList, "list of teams (with teamCodes)");
+ teams.setHelp({
+  examples: [
+    "",
+    "-list",
+  ],
+});
 
  module.exports = teams;

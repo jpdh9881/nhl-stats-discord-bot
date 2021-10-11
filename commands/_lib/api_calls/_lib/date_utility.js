@@ -30,6 +30,13 @@ const getDateRange = (yearMonth = "currentMonth") => {
     const endDay = (new Date(year, month, 0)).getDate();
     const end = `${year}-${month}-${endDay}`;
     return [start, end];
+  } else if (yearMonth === "monthFromToday") {
+    const now = today();
+    const start = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+    // add 30 days to date
+    const then = new Date(now.setDate(now.getDate() + 30));
+    const end = `${then.getFullYear()}-${then.getMonth()}-${then.getDate()}`;
+    return [start, end];
   } else {
     const [year, month] = yearMonth.split("-");
     const start = `${year}-${month}-01`;

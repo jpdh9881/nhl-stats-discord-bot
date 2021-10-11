@@ -6,8 +6,7 @@ class Command {
   identifier = null;
   routes = [];
 
-  prototype = null;
-  help = null;
+  help;
 
   // Instance methods
   constructor(identifier) {
@@ -15,11 +14,19 @@ class Command {
     //  - label = what the user sees/uses
     //  - identifier = what the code sees/uses
     this.identifier = identifier;
+    this.help = {
+      prototype: "",
+      description: [],
+      examples: [],
+    }
 
     // Set the default routes
-    this.routes.push(new Route("", this.getHelp));
-    this.routes.push(new Route("-h", this.getHelp));
-    this.routes.push(new Route("-help", this.getHelp));
+    //  - these can be overriden by this.addRoute()
+    this.routes.push(new Route("", this.getHelp, "this help message"));
+    this.routes.push(new Route("-h", this.getHelp, "this help message"));
+    this.routes.push(new Route("-help", this.getHelp, "this help message"));
+
+    console.log(` - created command "${this.identifier}"`);
   }
 
   getIdentifier = () => {
@@ -27,18 +34,55 @@ class Command {
   };
   matchRoute = (userArgs) => matchRoute(this.routes, userArgs);
 
-  addRoute = (str, fn) => {
-    this.routes.push(new Route(str, fn));
+  addRoute = (str, fn, help) => {
+    const existingIndex = this.routes.findIndex(r => r.str === str);
+    if (existingIndex > -1) {
+      this.routes[existingIndex] = new Route(str, fn, help);
+    } else {
+      this.routes.push(new Route(str, fn, help));
+    }
   };
   setPrototype = (prototype) => {
     this.prototype = prototype;
   };
-  setHelp = (help) => {
-    this.help = help;
+  setHelp = ({description, examples}) => {
+    if (description) {
+      this.help.description = description;
+    }
+    if (examples) {
+      this.help.examples = examples;
+    }
   }
   getHelp = () => {
-    const commandLabel = commandRegister.getLabelFromCommand(this.identifier)
-    return `${this.prototype? "Prototype: " + commandLabel + ' ' + this.prototype + "\n" : ""}${this.help}`;
+    const lbl = commandRegister.getLabelFromCommand(this.identifier)
+    let help = "";
+    if (this.routes.length > 0) {
+      help += "Routes:\n";
+      this.routes.forEach(r => {
+        if (r.getString() === "") {
+          help += `  ${lbl} (none)\n`;
+        } else {
+          help += `  ${lbl} ${r.getString()}\n`;
+        }
+        if (r.getHelp()) {
+          help += `  ${" ".repeat(lbl.length)} (${r.getHelp()})\n`;
+        }
+      });
+    }
+    if (this.help.description.length > 0) {
+      help += "Description:\n";
+      this.help.description.forEach(d => {
+        help += `  ${d}\n`;
+      });
+    }
+    if (this.help.examples.length > 0) {
+      help += "Examples:\n";
+      this.help.examples.forEach(e => {
+        help += `  ${lbl} ${e}\n`;
+      });
+    }
+
+    return help;
   }
 }
 

@@ -2,11 +2,13 @@ class Route {
   str;
   arr;
   fn;
+  help;
 
-  constructor(str, fn) {
+  constructor(str, fn, help = null) {
     this.str = str;
     this.arr = str.split(" ");
     this.fn = fn;
+    this.help = help;
   }
 
   getString = () => {
@@ -17,6 +19,9 @@ class Route {
   }
   getArg = (index) => {
     return this.arr[index];
+  }
+  getHelp = () => {
+    return this.help;
   }
   length = () => {
     return this.arr.length;

@@ -38,7 +38,7 @@ const byDateTeam = async (teamCode, date = today(true)) => {
   }
 };
 
-const byDateRangeTeam = async (teamCode, range = "month") => {
+const byDateRangeTeam = async (teamCode, range = "currentMonth") => {
   const [dateStart, dateEnd] = getDateRange(range);
   const teamId = getIdFromAbbrev(teamCode.toUpperCase());
 
@@ -61,7 +61,7 @@ const byDateRangeTeam = async (teamCode, range = "month") => {
 };
 
 const byTeamNext = async (teamCode) => {
-  const [dateStart, dateEnd] = getDateRange("custom");
+  const [dateStart, dateEnd] = getDateRange("monthFromToday");
   const teamId = getIdFromAbbrev(teamCode.toUpperCase());
 
   let res = await axios.get(`${api}schedule`, {

@@ -1,10 +1,10 @@
 const makeGame = require("./makeGame.js");
 
-const makeSchedule = (data, teamIdMap) => {
+const makeSchedule = (data) => {
   let games = [];
 
   data.forEach(game => {
-    games.push(makeGame(game, teamIdMap[game.teams.home.team.id], teamIdMap[game.teams.away.team.id]));
+    games.push(makeGame(game));
   });
 
   let text = "";

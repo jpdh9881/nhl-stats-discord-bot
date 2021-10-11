@@ -1,15 +1,10 @@
 const axios = require("axios");
-const dateFormat = require("dateformat");
-
 const { api } = require("../../../api_settings.js");
 const { today, getDateRange } = require("./_lib/date_utility.js");
-const getTeams = require("./_lib/teams/getTeams.js");
+const { getIdFromAbbrev } = require("./_lib/teams/team_utility.js");
 const makeSchedule = require("./_lib/schedule/makeSchedule.js");
 
 const byDateAllTeams = async (date = today(true)) => {
-  // Get team abbreviations
-  const teamIdMap = await getTeams({ format: "id:abbrev", raw: true });
-
   let res = await axios.get(`${api}schedule`, {
     params: {
       startDate: date,
@@ -18,22 +13,14 @@ const byDateAllTeams = async (date = today(true)) => {
   });
   if (res.data.dates.length > 0) {
     const data = res.data.dates[0].games;
-    return makeSchedule(data, teamIdMap);
+    return makeSchedule(data);
   } else {
     return "No games :(";
   }
-
-
 };
 
 const byDateTeam = async (teamCode, date = today(true)) => {
-  console.log(teamCode, date);
-  // Get team abbreviations
-  const teamIdMap = await getTeams({ format: "id:abbrev", raw: true });
-
-  const teamAbbrev = teamCode.toUpperCase();
-  const teamIdAbbrev = Object.entries(teamIdMap).find(([id, abbrev]) => abbrev.toUpperCase() === teamAbbrev);
-  const teamId = teamIdAbbrev[0];
+  const teamId = getIdFromAbbrev(teamCode.toUpperCase());
 
   let res = await axios.get(`${api}schedule`, {
     params: {
@@ -45,7 +32,7 @@ const byDateTeam = async (teamCode, date = today(true)) => {
 
   if (res.data.dates.length > 0) {
     const data = res.data.dates[0].games;
-    return makeSchedule(data, teamIdMap);
+    return makeSchedule(data);
   } else {
     return "No games :(";
   }
@@ -53,13 +40,7 @@ const byDateTeam = async (teamCode, date = today(true)) => {
 
 const byDateRangeTeam = async (teamCode, range = "month") => {
   const [dateStart, dateEnd] = getDateRange(range);
-
-  // Get team abbreviations
-  const teamIdMap = await getTeams({ format: "id:abbrev", raw: true });
-
-  const teamAbbrev = teamCode.toUpperCase();
-  const teamIdAbbrev = Object.entries(teamIdMap).find(([id, abbrev]) => abbrev.toUpperCase() === teamAbbrev);
-  const teamId = teamIdAbbrev[0];
+  const teamId = getIdFromAbbrev(teamCode.toUpperCase());
 
   let res = await axios.get(`${api}schedule`, {
     params: {
@@ -73,7 +54,7 @@ const byDateRangeTeam = async (teamCode, range = "month") => {
     let data = [];
     const gamesArrays = res.data.dates.map(d => d.games);
     data = data.concat(...gamesArrays);
-    return makeSchedule(data, teamIdMap);
+    return makeSchedule(data);
   } else {
     return "No games :(";
   }
@@ -81,15 +62,7 @@ const byDateRangeTeam = async (teamCode, range = "month") => {
 
 const byTeamNext = async (teamCode) => {
   const [dateStart, dateEnd] = getDateRange("custom");
-
-  console.log(dateStart, dateEnd);
-
-  // Get team abbreviations
-  const teamIdMap = await getTeams({ format: "id:abbrev", raw: true });
-
-  const teamAbbrev = teamCode.toUpperCase();
-  const teamIdAbbrev = Object.entries(teamIdMap).find(([id, abbrev]) => abbrev.toUpperCase() === teamAbbrev);
-  const teamId = teamIdAbbrev[0];
+  const teamId = getIdFromAbbrev(teamCode.toUpperCase());
 
   let res = await axios.get(`${api}schedule`, {
     params: {
@@ -102,7 +75,7 @@ const byTeamNext = async (teamCode) => {
   const todayFormatted = today(true);
   const next = res.data.dates.find(gm => gm.date > todayFormatted);
   if (next) {
-    return makeSchedule(next.games, teamIdMap);
+    return makeSchedule(next.games);
   } else {
     return "No game within the next month :(";
   }

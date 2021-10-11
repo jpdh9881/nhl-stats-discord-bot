@@ -1,8 +1,8 @@
-const padLeft = require("../format.js").padLeft;
-const padRight = require("../format.js").padRight;
-const getLongestString = require("../format.js").getLongestString;
+const commandRegister = require("../../../../../command_register.js");
+const { padLeft, padRight, getLongestString } = require("../format.js");
 
-const makeRound = (picks, draftYear, roundNum, teamIdMap) => {
+const makeRound = (picks, draftYear, roundNum) => {
+  const teamIdMap = commandRegister.global.teams["id:teamCode"];
   let text = `${draftYear} NHL Draft - Round ${roundNum}\n`;
 
   const numColsName = getLongestString(picks.map(p => p.prospect.fullName))[0];

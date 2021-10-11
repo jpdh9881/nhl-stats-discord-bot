@@ -1,4 +1,7 @@
-const makeGame = (game, teamCodeHome, teamCodeAway) => {
+const makeGame = (game) => {
+  const teamIdMap = commandRegister.global.teams["id:teamCode"];
+  const teamCodeHome = teamIdMap[game.teams.home.team.id];
+  const teamCodeAway = teamIdMap[game.teams.away.team.id];
   const g = game;
 
   const date = (new Date(g.gameDate)).toLocaleDateString();

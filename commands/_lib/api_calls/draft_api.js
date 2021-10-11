@@ -1,13 +1,10 @@
 const axios = require("axios");
 const api = require("../../../api_settings.js").api;
-const getTeams = require("./_lib/teams/getTeams");
 const makeProspect = require("./_lib/prospect/makeProspect");
 const makeRound = require("./_lib/draft/makeRound");
+const commandRegister = require("../../../command_register.js");
 
 const round = async (draftYear = (new Date()).getFullYear(), roundNum = 1) => {
-  // Get team abbreviations
-  const teamIdMap = await getTeams({ format: "id:abbrev", raw: true });
-
   const res = await axios.get(`${api}draft/${draftYear}`);
   if (res.data.drafts.length <= 0) {
     throw new Error ("Draft not found!");
@@ -20,13 +17,10 @@ const round = async (draftYear = (new Date()).getFullYear(), roundNum = 1) => {
     throw new Error ("Round not found!");
   }
 
-  return makeRound(round.picks, year, roundNum, teamIdMap);
+  return makeRound(round.picks, year, roundNum);
 };
 
 const pick = async (draftYear = (new Date()).getFullYear(), pickOverallNum = 1) => {
-  // Get team abbreviations
-  const teamIdMap = await getTeams({ format: "id:abbrev", raw: true });
-
   const res1 = await axios.get(`${api}draft/${draftYear}`);
   if (res1.data.drafts.length <= 0) {
     throw new Error ("Draft not found!");
@@ -48,7 +42,7 @@ const pick = async (draftYear = (new Date()).getFullYear(), pickOverallNum = 1) 
     prospect = res2.data.prospects[0];
   }
 
-  return makeProspect(prospect, pick, teamIdMap[pick.team.id]);
+  return makeProspect(prospect, pick);
 };
 
 module.exports = {

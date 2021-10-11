@@ -3,7 +3,7 @@ const api = require("../../../../../api_settings").api;
 
 /**
  *
- * @param {object} param0 format = "abbrev:id"/"id:abbrev"/"abbrev:name", raw = true/false
+ * @param {object} param0 format = "teamCode:id"/"id:teamCode"/"teamCode:name", raw = true/false
  * @returns
  */
 const getTeams = async ({ format, raw }) => {
@@ -12,14 +12,14 @@ const getTeams = async ({ format, raw }) => {
   const teams = {};
   res.data.teams.forEach(team => {
     switch(format) {
-      case "abbrev:id":
+      case "teamCode:id":
         teams[team.abbreviation] = team.id;
         break;
-      case "id:abbrev":
+      case "id:teamCode":
         teams[team.id] = team.abbreviation;
         break;
       default:
-        // "abbrev:name"
+        // "teamCode:name"
         teams[team.abbreviation] = team.name;
     };
   });

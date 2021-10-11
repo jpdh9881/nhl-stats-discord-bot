@@ -1,36 +1,42 @@
-const entryPoint = require("./commands/entryPoint.js");
-const draft = require("./commands/draft.js");
-const player = require("./commands/player.js");
-const prospect = require("./commands/prospect.js");
-const schedule = require("./commands/schedule.js");
-const team = require("./commands/team.js");
-const teams = require("./commands/teams.js");
+const getTeams = require("./commands/_lib/api_calls/_lib/teams/getTeams.js");
 
 class CommandRegister {
-  static commands = {
-    // label: command
-    //  - label: what the user types to access the command
-    //  - command: a Command object
-
-    "?": entryPoint,
-    "?draft": draft,
-    "?player": player,
-    "?prospect": prospect,
-    "?schedule": schedule,
-    "?team": team,
-    "?teams": teams,
-  }
-
-  static isCommand = (label) => {
-    return CommandRegister.commands[label]? true : false;
+  commands = {};
+  global = {
+    teams: {},
   };
-  static commandFromLabel = (label) => {
-    return CommandRegister.commands[label];
+
+  init = async () => {
+    // Get the team map (id:teamCode) so we don't have to continually re-fetch it
+    this.global.teams["id:teamCode"] = await getTeams({ format: "id:teamCode", raw: true });
+
+    // Initialize the commands
+    //  - putting the *requires* here gets around a circular dependency thing I don't understand yet
+    this.commands = {
+      // label: command
+      //  - label: what the user types to access the command
+      //  - command: a Command object
+
+      "?": require("./commands/entryPoint.js"),
+      "?draft": require("./commands/draft.js"),
+      "?player": require("./commands/player.js"),
+      "?prospect": require("./commands/prospect.js"),
+      "?schedule": require("./commands/schedule.js"),
+      "?team": require("./commands/team.js"),
+      "?teams": require("./commands/teams.js"),
+    };
   };
-  static labelFromCommand = (commandId) => {
-    const [label, command] = Object.entries(CommandRegister.commands).find(([lbl, cmd]) => cmd.getIdentifier() === commandId);
+
+  isCommand = (label) => {
+    return this.commands[label]? true : false;
+  };
+  commandFromLabel = (label) => {
+    return this.commands[label];
+  };
+  labelFromCommand = (commandId) => {
+    const [label, command] = Object.entries(this.commands).find(([lbl, cmd]) => cmd.getIdentifier() === commandId);
     return label;
   };
 };
 
-module.exports = CommandRegister;
+module.exports = new CommandRegister ();

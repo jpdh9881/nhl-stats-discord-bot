@@ -1,14 +1,12 @@
 const axios = require("axios");
 const api = require("../../../api_settings.js").api;
-const getTeams = require("./_lib/teams/getTeams.js");
+const { getIdFromAbbrev } = require("./_lib/teams/team_utility.js");
 const makeInfo = require("./_lib/team/makeInfo.js");
 const makeRoster = require("./_lib/team/makeRoster.js");
 const makeStats = require("./_lib/team/makeStats.js");
 
 const teamInfo = async (teamCode) => {
-  // Get team ID
-  const teamIdMap = await getTeams({ format: "abbrev:id", raw: true });
-  const teamId = teamIdMap[teamCode.toUpperCase()];
+  const teamId = getIdFromAbbrev(teamCode.toUpperCase());
 
   if (!teamId) {
     throw new Error ("Invalid team code.");
@@ -20,9 +18,7 @@ const teamInfo = async (teamCode) => {
 };
 
 const teamRoster = async (teamCode) => {
-  // Get team ID
-  const teamIdMap = await getTeams({ format: "abbrev:id", raw: true });
-  const teamId = teamIdMap[teamCode.toUpperCase()];
+  const teamId = getIdFromAbbrev(teamCode.toUpperCase());
 
   if (!teamId) {
     throw new Error ("Invalid team code.");
@@ -34,9 +30,7 @@ const teamRoster = async (teamCode) => {
 };
 
 const teamStats = async (teamCode) => {
-  // Get team ID
-  const teamIdMap = await getTeams({ format: "abbrev:id", raw: true });
-  const teamId = teamIdMap[teamCode.toUpperCase()];
+  const teamId = getIdFromAbbrev(teamCode.toUpperCase());
 
   if (!teamId) {
     throw new Error ("Invalid team code.");

@@ -1,5 +1,7 @@
-const makeProspect = (prospect, pick, teamCode) => {
+const commandRegister = require("../../../../../command_register.js");
+const makeProspect = (prospect, pick) => {
   const p = pick, pr = prospect;
+  const teamCode = commandRegister.global.teams["id:teamCode"][pick.team.id];
 
   let text;
   let name = pr?.fullName;
@@ -44,7 +46,7 @@ const makeProspect = (prospect, pick, teamCode) => {
     text +=
       `  -----\n` +
       `  Drafted by ${T_C}\n` +
-      `  - round ${R} -- ${P_O} overall -- ${Y} NHL Entry Draft\n`;
+      `    round ${R} -- ${P_O} overall -- ${Y} NHL Entry Draft\n`;
   }
 
   text +=

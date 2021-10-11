@@ -5,7 +5,6 @@ const commandRegister = require("../../../command_register.js");
 class Command {
   identifier = null;
   routes = [];
-
   help;
 
   // Instance methods
@@ -57,7 +56,7 @@ class Command {
     const lbl = commandRegister.getLabelFromCommand(this.identifier)
     let help = "";
     if (this.routes.length > 0) {
-      help += "Routes:\n";
+      help += `"${lbl}" Command:\n`;
       this.routes.forEach(r => {
         if (r.getString() === "") {
           help += `  ${lbl} (none)\n`;

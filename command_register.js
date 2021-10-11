@@ -13,7 +13,8 @@ class CommandRegister {
     this.global.teams["id:teamCode"] = await getTeams({ format: "id:teamCode", raw: true });
 
     // Initialize the commands
-    //  - putting the *requires* here gets around a circular dependency thing I don't understand yet
+    //  - putting the *requires* here (instead of at top of page)gets around a circular
+    //    dependency thing I don't understand yet
     this.commands = {
       // label: command
       //  - label: what the user types to access the command

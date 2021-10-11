@@ -9,8 +9,7 @@ const makeProspect = (prospect, pick) => {
   // Prospects from old drafts don't have prospect records
   if (pr) {
     const diff = new Date(Math.abs(Date.now() - (new Date(pr.birthDate))));
-    age = diff.getFullYear() - 1970; // https://stackoverflow.com/questions/11346069/how-to-get-difference-in-year-where-dates-are-in-yyyy-mm-dd
-    name = pr.firstName + " " + pr.lastName;
+    age = diff.getFullYear() - 1970 || ""; // https://stackoverflow.com/questions/11346069/how-to-get-difference-in-year-where-dates-are-in-yyyy-mm-dd
   }
 
   // prospect object

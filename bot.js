@@ -52,7 +52,7 @@ commandRegister
             }
           } catch (error) {
             console.log(error);
-            await message.reply(ERROR_TAG + " - " + error);
+            await message.reply("```" + ERROR_TAG + " - " + error + "```");
           }
         }
       }

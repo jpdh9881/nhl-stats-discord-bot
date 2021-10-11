@@ -2,7 +2,6 @@ const axios = require("axios");
 const api = require("../../../api_settings.js").api;
 const makeProspect = require("./_lib/prospect/makeProspect");
 const makeRound = require("./_lib/draft/makeRound");
-const commandRegister = require("../../../command_register.js");
 
 const round = async (draftYear = (new Date()).getFullYear(), roundNum = 1) => {
   const res = await axios.get(`${api}draft/${draftYear}`);
@@ -12,7 +11,7 @@ const round = async (draftYear = (new Date()).getFullYear(), roundNum = 1) => {
 
   const year = res.data.drafts[0].draftYear;
   const rounds = res.data.drafts[0].rounds;
-  const round = rounds[roundNum - 1];
+  const round = rounds.find(r => r.roundNumber === parseInt(roundNum));
   if (!round) {
     throw new Error ("Round not found!");
   }
@@ -26,11 +25,15 @@ const pick = async (draftYear = (new Date()).getFullYear(), pickOverallNum = 1) 
     throw new Error ("Draft not found!");
   }
   const rounds = res1.data.drafts[0].rounds;
-  const numPicksPerRound = rounds[0].picks.length;
-  const roundIndex = Math.floor(pickOverallNum / numPicksPerRound);
-  const indexInRound = pickOverallNum - (roundIndex * numPicksPerRound);
 
-  const pick = rounds[roundIndex]?.picks[indexInRound - 1];
+  let pick;
+  for (const round of rounds) {
+    pick = round.picks.find(p => p.pickOverall === parseInt(pickOverallNum));
+    if (pick) {
+      break;
+    }
+  }
+
   if (!pick) {
     throw new Error ("Invalid pick");
   }
@@ -40,6 +43,10 @@ const pick = async (draftYear = (new Date()).getFullYear(), pickOverallNum = 1) 
   if (prospectId) {
     const res2 = await axios.get(`${api}draft/prospects/${prospectId}`);
     prospect = res2.data.prospects[0];
+  } else {
+    prospect = {
+      fullName: pick.prospect.fullName,
+    };
   }
 
   return makeProspect(prospect, pick);

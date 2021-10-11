@@ -29,6 +29,12 @@ class CommandRegister {
       "?teams": require("./commands/teams.js"),
     };
     console.log("Commands registered.");
+
+    Object.entries(this.commands).forEach(([lbl, cmd]) => {
+      cmd.routes.forEach(r => {
+        console.log(lbl + " " + r.getString());
+      });
+    });
   };
 
   isCommand = (label) => {

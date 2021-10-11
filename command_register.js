@@ -6,7 +6,6 @@ const schedule = require("./commands/schedule.js");
 const team = require("./commands/team.js");
 const teams = require("./commands/teams.js");
 
-// "Register" commands so they're available to the user
 class CommandRegister {
   static commands = {
     // label: command

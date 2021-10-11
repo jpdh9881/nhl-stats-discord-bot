@@ -2,7 +2,7 @@ const axios = require("axios");
 const dateFormat = require("dateformat");
 
 const { api } = require("../../../api_settings.js");
-const { today, getDateRange } = require("./_lib/utility.js");
+const { today, getDateRange } = require("./_lib/date_utility.js");
 const getTeams = require("./_lib/teams/getTeams.js");
 const makeSchedule = require("./_lib/schedule/makeSchedule.js");
 

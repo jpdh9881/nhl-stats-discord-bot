@@ -20,15 +20,18 @@ const todayPlusFormatted = (plusAmount = "week") => {
   }
 };
 
-const getDateRange = (type = "custom", year = today().getFullYear(), month = today().getMonth() + 1) => {
+const getDateRange = (yearMonth = "currentMonth") => {
   // https://stackoverflow.com/questions/1184334/get-number-days-in-a-specified-month-using-javascript
 
-  if (type === "custom") {
-    const day = today().getDate();
-    const start = `${year}-${month}-${day}`;
-    const endDay = todayPlusFormatted("month");
-    return [start, endDay];
-  } else if (type === "month") {
+  if (yearMonth === "currentMonth") {
+    const year = today().getFullYear();
+    const month = today().getMonth() + 1;
+    const start = `${year}-${month}-01`;
+    const endDay = (new Date(year, month, 0)).getDate();
+    const end = `${year}-${month}-${endDay}`;
+    return [start, end];
+  } else {
+    const [year, month] = yearMonth.split("-");
     const start = `${year}-${month}-01`;
     const endDay = (new Date(year, month, 0)).getDate();
     const end = `${year}-${month}-${endDay}`;

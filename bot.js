@@ -1,7 +1,6 @@
 // Modules
 require("dotenv").config();
 const { Client, Intents } = require('discord.js');
-const Command = require("./commands/_lib/classes/Command.js");
 const CommandRegister = require("./command_register.js");
 const removeSwitchesFromArgs = require("./_lib/remove_switches_from_args.js");
 const splitMessage = require("./_lib/splitMessage.js");
@@ -23,9 +22,6 @@ client.on('messageCreate', async message => {
 
     if (CommandRegister.isCommand(userCommand)) {
       const userArgs = split.slice(1);
-
-      let text;
-      let helpCommand;
       try {
         const command = CommandRegister.commandFromLabel(userCommand);
 

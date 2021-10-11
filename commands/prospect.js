@@ -1,5 +1,5 @@
 const Command = require("./_lib/classes/Command.js");
-const prospectAPI = require("./_lib/api_calls/prospect.js");
+const prospectAPI = require("./_lib/api_calls/prospect_api.js");
 
 /**
  * (1 argument)

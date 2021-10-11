@@ -2,9 +2,11 @@ const Route = require("./Route.js");
 const matchRoute = require("../match_route.js");
 
 class Command {
-  identifier;
+  identifier = null;
   routes = [];
-  prototype;
+
+  prototype = null;
+  help = null;
 
   // Instance methods
   constructor(identifier) {
@@ -14,6 +16,9 @@ class Command {
   getIdentifier = () => {
     return this.identifier;
   };
+  getHelp = () => {
+    return this.help;
+  }
   matchRoute = (userArgs) => matchRoute(this.routes, userArgs);
 
   addRoute = (str, fn) => {
@@ -22,6 +27,9 @@ class Command {
   setPrototype = (prototype) => {
     this.prototype = prototype;
   };
+  setHelp = (help) => {
+    this.help = help;
+  }
 }
 
 module.exports = Command;

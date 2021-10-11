@@ -45,6 +45,12 @@ const datetime = {
     }
     return false;
   },
+  YYYY_MM: (value) => {
+    if (value.match(/^\d\d\d\d-\d\d$/)) {
+      return true;
+    }
+    return false;
+  },
 };
 
 module.exports = {
@@ -55,4 +61,5 @@ module.exports = {
   "{prospectId}": personId,
   "{teamCode}": teamCode,
   "{YYYY-MM-DD}": datetime.YYYY_MM_DD,
+  "{YYYY-MM}": datetime.YYYY_MM,
 };

@@ -1,5 +1,5 @@
 const Command = require("./_lib/classes/Command.js");
-const playerAPI = require("./_lib/api_calls/player.js");
+const playerAPI = require("./_lib/api_calls/player_api.js");
 
 /**
  * (2 arguments)

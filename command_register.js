@@ -30,10 +30,13 @@ class CommandRegister {
   isCommand = (label) => {
     return this.commands[label]? true : false;
   };
-  commandFromLabel = (label) => {
+  getCommandsList = () => {
+    return Object.keys(this.commands);
+  };
+  getCommandFromLabel = (label) => {
     return this.commands[label];
   };
-  labelFromCommand = (commandId) => {
+  getLabelFromCommand = (commandId) => {
     const [label, command] = Object.entries(this.commands).find(([lbl, cmd]) => cmd.getIdentifier() === commandId);
     return label;
   };

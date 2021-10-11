@@ -30,10 +30,6 @@ const matchRoute = (routes, userArgs) => {
             // No args
 
             return routesOfSameLength[routeNum];
-         } else if (userArg === "" && arg !== "") {
-            // Missing args
-
-            return ["no-arg"];
          } else if (arg.startsWith("{")) {
             // Arg which must correspond to a {type}
 

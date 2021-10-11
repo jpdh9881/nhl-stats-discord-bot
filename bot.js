@@ -26,7 +26,7 @@ commandRegister
         if (commandRegister.isCommand(userCommand)) {
           const userArgs = split.slice(1);
           try {
-            const command = commandRegister.commandFromLabel(userCommand);
+            const command = commandRegister.getCommandFromLabel(userCommand);
 
             if (!command) {
               throw `${userCommand} is not a recognized command.`;

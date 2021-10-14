@@ -10,6 +10,11 @@ const today = (formatted) => {
   }
 };
 
+/**
+ * Returns formatted (yyyy-mm-dd) date a week or month from today's date
+ * @param {string} plusAmount week or month
+ * @returns
+ */
 const todayPlusFormatted = (plusAmount = "week") => {
   if (plusAmount === "week") {
     const add = today().getDate() + 7;

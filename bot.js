@@ -11,6 +11,7 @@ const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
 
+// Initialize the command register, then create the bot
 commandRegister
   .init()
   .then(() => {
@@ -42,8 +43,13 @@ commandRegister
               }
             }
 
+            // Remove switches from args (i.e. -roster or -info is not needed by the api call methods)
+            // Pass cleaned-up args as well as full args (so clearer console.log message can be written
+            //  when the route is run)
             const text = await route.run(removeSwitchesFromArgs(userArgs), userArgs);
 
+            // Split the text into pieces (2000 character limit for Discord messages)
+            //  - this currently splits based on lines, NOT characters
             if (text) {
               const texts = splitMessage(text);
               for (const piece of texts) {

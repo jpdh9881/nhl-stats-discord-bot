@@ -1,4 +1,4 @@
-const verifyArgType = require("./arg_type_verification");
+const verifyArgType = require("./verify_arguments.js");
 
 /**
  * Matches a user's arguments string with a route, if any

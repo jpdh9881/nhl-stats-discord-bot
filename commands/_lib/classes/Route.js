@@ -1,3 +1,10 @@
+/**
+ * Routes have
+ *  - the command it belongs to (commandId)
+ *  - a string which defines the arguments
+ *  - a function which is called when the route is matched
+ *  - a help message, which explains/describes the route string
+ */
 class Route {
   commandId;
   str;

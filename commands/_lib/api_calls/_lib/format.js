@@ -1,3 +1,10 @@
+/**
+ * Adds characters to the left of a value so it takes up a certain number of characters
+ * @param {string/number} value value to be displayed
+ * @param {number} columns the total number of columns/chars that the value + padding should take up
+ * @param {string/number} padChar the character that will "pad" the value
+ * @returns
+ */
 const padLeft = (value, columns = 2, padChar = " ") => {
   if (value === undefined) {
     return "?".repeat(columns);
@@ -7,6 +14,14 @@ const padLeft = (value, columns = 2, padChar = " ") => {
     return value;
   }
 };
+
+/**
+ * Adds characters to the right of a value so it takes up a certain number of characters
+ * @param {*} value value to be displayed
+ * @param {*} columns the total number of columns/chars that the value + padding should take up
+ * @param {*} padChar the character that will "pad" the value
+ * @returns
+ */
 const padRight = (value, columns = 2, padChar = " ") => {
   if (value === undefined) {
     return "?".repeat(columns);
@@ -16,6 +31,12 @@ const padRight = (value, columns = 2, padChar = " ") => {
     return value.toString();
   }
 };
+
+/**
+ * Return the longest string in an array of strings
+ * @param {array} strings
+ * @returns
+ */
 const getLongestString = (strings = []) => {
   let longestLength = 0;
   let stringValue;

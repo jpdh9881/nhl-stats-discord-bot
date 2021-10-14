@@ -2,6 +2,13 @@ const Route = require("./Route.js");
 const matchRoute = require("../match_route.js");
 const commandRegister = require("../../../command_register.js");
 
+/**
+ * Command objects contain:
+ *  - the internal identifier (id) of the command (as opposed to the label, which is what
+ *    the user sees)
+ *  - the routes which belong to the command
+ *  - a help object, which a help method converts into a help message
+ */
 class Command {
   identifier = null;
   routes = [];
@@ -14,7 +21,6 @@ class Command {
     //  - identifier = what the code sees/uses
     this.identifier = identifier;
     this.help = {
-      prototype: "",
       description: [],
       examples: [],
     }
@@ -40,9 +46,6 @@ class Command {
     } else {
       this.routes.push(new Route(this.identifier, str, fn, help));
     }
-  };
-  setPrototype = (prototype) => {
-    this.prototype = prototype;
   };
   setHelp = ({description, examples}) => {
     if (description) {

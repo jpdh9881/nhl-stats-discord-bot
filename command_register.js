@@ -1,11 +1,20 @@
 const getTeams = require("./commands/_lib/api_calls/_lib/teams/getTeams.js");
 
+/**
+ * Where all commands are registered and made available to the bot
+ * - this module exports an instantiated CommandRegister object
+ */
 class CommandRegister {
   commands = {};
   global = {
     teams: {},
   };
 
+  /**
+   * (Constructors cannot be async)
+   * Having an init() method helps get around a circular dependency issue re: modules
+   *  plus allows for asynchronously initializing global variables
+   */
   init = async () => {
     console.log("Registering commands...");
 
@@ -13,7 +22,7 @@ class CommandRegister {
     this.global.teams["id:teamCode"] = await getTeams({ format: "id:teamCode", raw: true });
 
     // Initialize the commands
-    //  - putting the *requires* here (instead of at top of page)gets around a circular
+    //  - putting the *requires* here (instead of at top of page) gets around a circular
     //    dependency thing I don't understand yet
     this.commands = {
       // label: command
@@ -30,11 +39,13 @@ class CommandRegister {
     };
     console.log("Commands registered.");
 
-    Object.entries(this.commands).forEach(([lbl, cmd]) => {
-      cmd.routes.forEach(r => {
-        console.log(lbl + " " + r.getString());
-      });
-    });
+    // Code to console.log all routes
+
+    // Object.entries(this.commands).forEach(([lbl, cmd]) => {
+    //   cmd.routes.forEach(r => {
+    //     console.log(lbl + " " + r.getString());
+    //   });
+    // });
   };
 
   isCommand = (label) => {

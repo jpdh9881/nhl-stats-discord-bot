@@ -3,7 +3,7 @@ require("dotenv").config();
 const { Client, Intents } = require('discord.js');
 const commandRegister = require("./command_register.js");
 const removeSwitchesFromArgs = require("./_lib/remove_switches_from_args.js");
-const splitMessage = require("./_lib/splitMessage.js");
+const { splitMessage } = require("./_lib/splitMessage.js");
 
 const ERROR_TAG = "	༼ ༎ຶ ෴ ༎ຶ༽ "; // monster - http://asciimoji.com/
 

@@ -21,6 +21,7 @@ const stats = async (playerId) => {
   try {
     const res = await axios.get(`${api}people/${playerId}/stats?stats=statsSingleSeason`);
     if (res.data.stats.length > 0) {
+      console.log(res.data.stats);
       const data = res.data.stats[0].splits[0];
       const text = makePlayer({ stats: data.stat, season: data.season });
       return text;
@@ -28,7 +29,8 @@ const stats = async (playerId) => {
       throw "";
     }
   } catch (e) {
-    return "Player not found.";
+    console.log(e)
+    return "Player data not found.";
   }
 };
 

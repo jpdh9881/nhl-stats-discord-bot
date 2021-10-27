@@ -49,7 +49,6 @@ commandRegister
             const text = await route.run(removeSwitchesFromArgs(userArgs), userArgs);
 
             // Split the text into pieces (2000 character limit for Discord messages)
-            //  - this currently splits based on lines, NOT characters
             if (text) {
               const texts = splitMessage(text);
               for (const piece of texts) {

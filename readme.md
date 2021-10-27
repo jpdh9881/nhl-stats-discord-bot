@@ -1,11 +1,14 @@
 # Description
 
 A Discord bot that fetches NHL-related data.
+
+This was for an assignment that I expanded on. The idea was to organize and code it in such a way that adding new commands and API calls would be relatively quick and easy.
+
 Thanks to Drew Hynes for documenting the undocumented NHL API (https://gitlab.com/dword4/nhlapi)
 
 ## Overview
 
-Commands and routes:
+Commands and associated routes:
 - ? ("entry point")
   - ? -list                                     (list all commands)
 - ?draft
@@ -40,6 +43,10 @@ Help:
 - will list all routes and general information about a command
 
 ## Code Organization
+
+- .env file:
+  - (.gitignored)
+  - must contain a TOKEN variable with the Discord bot ID
 
 - bot.js = the main file, where the bot is set up
 

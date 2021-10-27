@@ -23,7 +23,7 @@ class CommandRegister {
 
     // Initialize the commands
     //  - putting the *requires* here (instead of at top of page) gets around a circular
-    //    dependency thing I don't understand yet
+    //    dependency thing
     this.commands = {
       // label: command
       //  - label: what the user types to access the command

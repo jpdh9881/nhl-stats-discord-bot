@@ -1,6 +1,5 @@
 const Command = require("./_lib/classes/Command.js");
 const draftAPI = require("./_lib/api_calls/draft_api.js");
-const entryPoint = require("./entryPoint.js");
 
 /**
  * (2 arguments)

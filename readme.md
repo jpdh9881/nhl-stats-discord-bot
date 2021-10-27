@@ -1,6 +1,6 @@
 # Description
 
-A Discord bot that fetches NHL-related data.
+A node.js Discord bot that fetches NHL-related data.
 
 This was for an assignment that I expanded on. The idea was to organize and code it in such a way that adding new commands and API calls would be relatively quick and easy.
 
